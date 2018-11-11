@@ -1,4 +1,4 @@
-Platform Event Wrapper
+Platform Event Wrapper - Work In Progress (WIP)
 ======================
 
 What is it?
