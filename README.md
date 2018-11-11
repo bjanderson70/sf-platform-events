@@ -26,6 +26,8 @@ Event framework allows one to change/augment aspects at different
 levels/granularity. First, let’s define some of the salient components and their
 functions before we walk through a code-snippet.
 
+TBD: Use of Big Object for platform event repo
+
 Salient Components
 ------------------
 
