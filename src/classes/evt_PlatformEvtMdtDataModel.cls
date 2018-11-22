@@ -73,6 +73,7 @@ public virtual without sharing class evt_PlatformEvtMdtDataModel {
 		public String logHandlerClass;
 		public String errorHandlerClass;
 		public String alertHandlerClass;
+		public String storeHandlerClass;
 		public String publisherClass;
 		public String consumerClass;
 		public Boolean serializeEvent;
@@ -89,8 +90,6 @@ public virtual without sharing class evt_PlatformEvtMdtDataModel {
 		byEnvironmentAndLabel  // by environment
 
 	} // end of evt_ControlPolicySearchEnum
-	@TestVisible
-	static private final integer MAX_STRING_SIZE = 254;
 
 	// the custom mdt name
 	@TestVisible
@@ -107,6 +106,7 @@ public virtual without sharing class evt_PlatformEvtMdtDataModel {
 		, 'Log_Handler__c'
 		, 'Success_Handler__c'
 		, 'Serialize_Event__c'
+		, 'Store_Handler__c'
 		, 'Active__c'
 		, 'Allow_Consumer_Retry__c'
 
@@ -246,6 +246,7 @@ public virtual without sharing class evt_PlatformEvtMdtDataModel {
 
 				/* Set Data platform event **/
 
+				result.storeHandlerClass = evt_PlatformEvtMdtDataModel.defaultProcessHandler(cmdt.Store_Handler__c, evt_PlatformEvtMdtDataModel.DefaultProcessHandlerClass);
 				result.alertHandlerClass = evt_PlatformEvtMdtDataModel.defaultProcessHandler(cmdt.Alert_Handler__c, evt_PlatformEvtMdtDataModel.DefaultProcessHandlerClass);
 				result.consumerClass = evt_PlatformEvtMdtDataModel.defaultProcessHandler(cmdt.Consumer__c, evt_PlatformEvtMdtDataModel.DefaultConsumerClass);
 				result.publisherClass = evt_PlatformEvtMdtDataModel.defaultProcessHandler(cmdt.Publisher__c, evt_PlatformEvtMdtDataModel.DefaultPublisherClass);

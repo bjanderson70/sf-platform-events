@@ -36,6 +36,8 @@
  */
 @isTest
 private class evt_PlatformEventAttrsTest {
+
+	static final integer EXPECTED_ATTR_COUNT = 7;
 	@isTest
 	static void testGetterserializeData() {
 		// assign
@@ -47,7 +49,7 @@ private class evt_PlatformEventAttrsTest {
 		Boolean ae = attrs.serializeData();
 		// assert
 		system.assertEquals(ae, false);
-		system.assertEquals(true,attrs.instrumentation());
+		system.assertEquals(true, attrs.instrumentation());
 
 	}
 	@isTest
@@ -59,8 +61,8 @@ private class evt_PlatformEventAttrsTest {
 		// act
 		evt_PlatformEventAttrs attrs = new evt_PlatformEventAttrs(attributes);
 		// assert
-		system.assertEquals(true,attrs.serializeData());
-		system.assertEquals(true,attrs.instrumentation());
+		system.assertEquals(true, attrs.serializeData());
+		system.assertEquals(true, attrs.instrumentation());
 	}
 	@isTest
 	static void testSetterserializeData() {
@@ -71,7 +73,7 @@ private class evt_PlatformEventAttrsTest {
 		// act
 		evt_PlatformEventAttrs attrs = new evt_PlatformEventAttrs(attributes);
 		// assert
-		System.assertEquals(false,attrs.serializeData());
+		System.assertEquals(false, attrs.serializeData());
 		attrs.serializeData(true);
 		// assert
 		System.assertEquals(true, attrs.serializeData());
@@ -100,9 +102,9 @@ private class evt_PlatformEventAttrsTest {
 		};
 		// act
 		evt_PlatformEventAttrs attrs = new evt_PlatformEventAttrs(attributes);
-	 
+
 		// asseert
-		system.assertEquals(evt_PlatformEventAttrs.EventLogging.ALL,attrs.loggingStatus());
+		system.assertEquals(evt_PlatformEventAttrs.EventLogging.ALL, attrs.loggingStatus());
 		system.assertEquals(true, attrs.checkEvent());
 
 	}
@@ -128,9 +130,9 @@ private class evt_PlatformEventAttrsTest {
 		};
 		// act
 		evt_PlatformEventAttrs attrs = new evt_PlatformEventAttrs(attributes);
-		 
+
 		// assert
-		system.assertEquals(true,attrs.checkEvent());
+		system.assertEquals(true, attrs.checkEvent());
 
 	}
 	@isTest
@@ -141,10 +143,10 @@ private class evt_PlatformEventAttrsTest {
 		};
 		// act
 		evt_PlatformEventAttrs attrs = new evt_PlatformEventAttrs(attributes);
-		 
+
 		// assert
 		system.assertEquals(true, attrs.checkEvent());
-		system.assertEquals(false ,attrs.instrumentation());
+		system.assertEquals(false , attrs.instrumentation());
 
 	}
 	@isTest
@@ -155,14 +157,14 @@ private class evt_PlatformEventAttrsTest {
 		};
 		evt_PlatformEventAttrs attrs = new evt_PlatformEventAttrs(attributes);
 		// assert
-		system.assertEquals(false,attrs.checkEvent());
+		system.assertEquals(false, attrs.checkEvent());
 		// act
 
 		attrs.checkEvent(true);
-		 
+
 		// assert
-		system.assertEquals(true,attrs.checkEvent());
-		system.assertEquals(true ,attrs.instrumentation());
+		system.assertEquals(true, attrs.checkEvent());
+		system.assertEquals(true , attrs.instrumentation());
 
 	}
 	@isTest
@@ -173,10 +175,10 @@ private class evt_PlatformEventAttrsTest {
 		};
 		// act
 		evt_PlatformEventAttrs attrs = new evt_PlatformEventAttrs(attributes);
-	 
+
 		// assert
-		system.assertEquals(true,attrs.instrumentation());
-		 
+		system.assertEquals(true, attrs.instrumentation());
+
 
 	}
 	@isTest
@@ -189,8 +191,8 @@ private class evt_PlatformEventAttrsTest {
 		evt_PlatformEventAttrs attrs = new evt_PlatformEventAttrs(attributes);
 
 		// assert
-		system.assertEquals(true,attrs.instrumentation());
-		system.assertEquals(false,attrs.checkEvent());
+		system.assertEquals(true, attrs.instrumentation());
+		system.assertEquals(false, attrs.checkEvent());
 
 
 	}
@@ -203,13 +205,13 @@ private class evt_PlatformEventAttrsTest {
 
 		evt_PlatformEventAttrs attrs = new evt_PlatformEventAttrs(attributes);
 		// assert
-		system.assertEquals(false,attrs.instrumentation());
+		system.assertEquals(false, attrs.instrumentation());
 		// act
 		attrs.instrumentation(true);
-	 
+
 		// assert
-		system.assertEquals(true,attrs.instrumentation());
-	 
+		system.assertEquals(true, attrs.instrumentation());
+
 
 	}
 	@isTest
@@ -235,15 +237,15 @@ private class evt_PlatformEventAttrsTest {
 		};
 
 		evt_PlatformEventAttrs attrs = new evt_PlatformEventAttrs(attributes);
-		Boolean ctorStatus=attrs.allowRetryAfterException();
+		Boolean ctorStatus = attrs.allowRetryAfterException();
 		// act
 
 		attrs.allowRetryAfterException(true);
-		 
+
 		// assert
 		system.assertEquals(true, attrs.allowRetryAfterException());
-		system.assertEquals(false,ctorStatus);
-	
+		system.assertEquals(false, ctorStatus);
+
 	}
 	@isTest
 	static void testGetterretryCount() {
@@ -256,8 +258,8 @@ private class evt_PlatformEventAttrsTest {
 		// actt
 		Integer ce = attrs.retryCount();
 		// asser
-		system.assertEquals(ce, 1);
-		system.assertNotEquals(ce, 2);
+		system.assertEquals(1, ce);
+		system.assertNotEquals(2, ce);
 
 	}
 	@isTest
@@ -288,7 +290,7 @@ private class evt_PlatformEventAttrsTest {
 		attrs.retryCount(-1);
 		ce = attrs.retryCount();
 		// assert
-		system.assertEquals(ce, 1);
+		system.assertEquals(1, ce);
 
 	}
 	@isTest
@@ -298,8 +300,8 @@ private class evt_PlatformEventAttrsTest {
 		// act
 		Object ce = attrs.get(null);
 		// assert
-		system.assertEquals(ce, null);
-		 
+		system.assertEquals(null, ce);
+
 	}
 	@isTest
 	static void testput() {
@@ -314,7 +316,7 @@ private class evt_PlatformEventAttrsTest {
 		attrs.put('test', 1);
 		integer ce = (integer)attrs.get('test');
 		// assert
-		system.assertEquals(ce, 1);
+		system.assertEquals(1, ce);
 	}
 	@isTest
 	static void testgetAttributes() {
@@ -327,8 +329,8 @@ private class evt_PlatformEventAttrsTest {
 		// act
 		copyAttrs = attrs.getAttributes();
 		// assert
-		system.assertEquals(6,copyAttrs.size());
-		system.assertEquals((integer)copyAttrs.get(evt_PlatformEventAttrs.RETRY_COUNT_s), 1);
+		system.assertEquals(EXPECTED_ATTR_COUNT, copyAttrs.size());
+		system.assertEquals(1, (integer)copyAttrs.get(evt_PlatformEventAttrs.RETRY_COUNT_s));
 
 	}
 

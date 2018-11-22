@@ -35,7 +35,6 @@
  */
 public without sharing class evt_PlatformEventDAOLog {
 
-
 	/////////////////////////////////////////////////////////////////////////
 	// Data Members
 	/////////////////////////////////////////////////////////////////////////
@@ -92,7 +91,7 @@ public without sharing class evt_PlatformEventDAOLog {
 		this.json = theJson;
 		this.truncated = 0;
 		this.timestamp = theTimestamp;
-		this.name = string.isBlank(theName) ? this.timestamp.format() + evt_DefaultProcessLogHandler.EVENT_TYPE_TAG_s : theName;
+		this.name = string.isBlank(theName) ? this.timestamp.format() + evt_PlatformEvtUtilities.EVENT_TYPE_TAG_s : theName;
 		this.count = eventCount < 0 ? 1 : eventCount;
 
 	} // end of ctor

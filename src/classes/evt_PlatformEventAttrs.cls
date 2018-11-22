@@ -47,6 +47,7 @@ public  without sharing  class evt_PlatformEventAttrs {
 	public static final String ADD_INSTRUMENTATION_s = 'Instrumentation';
 	public static final String ALLOW_RETRY_AFTER_EXCEPTION_s = 'AllowRetry';
 	public static final String COMPRESS_EVENT_FOR_STORAGE_s = 'CompressEventForStorage';
+	public static final String EVENT_STORING_s = 'EventStoring';
 
 	public static final integer DEFAULT_RETRY_COUNT = 5;
 	public static final integer RETRY_COUNT_MAX = 9;
@@ -100,7 +101,7 @@ public  without sharing  class evt_PlatformEventAttrs {
 		return defaultValue;
 	}// end of serializeData
 	/**
-	* @description Setter to turn on audit or no 
+	* @description Setter to turn on audit or no
 	*/
 	public void serializeData(Boolean serializeTheData) {
 		this.put(SERIALIZE_EVENTS_s, serializeTheData);
@@ -142,6 +143,25 @@ public  without sharing  class evt_PlatformEventAttrs {
 	*/
 	public void checkEvent(Boolean checkEvt) {
 		this.put(CHECK_EVENT_NAME_s, checkEvt);
+	}
+	/**
+	* @description store event
+	* @return Boolean, default true
+	*/
+	public Boolean storeEvent() {
+		Object result = this.get(EVENT_STORING_s);
+		Boolean defaultValue = true;
+
+		if ( result != null && result instanceof Boolean ) {
+			defaultValue = (Boolean)result;
+		}
+		return defaultValue;
+	} // end of storeEvent
+	/**
+	* @description Setter to store event validatity
+	*/
+	public void storeEvent(Boolean checkEvt) {
+		this.put(EVENT_STORING_s, checkEvt);
 	}
 	/**
 	 * @description do instrumentation
@@ -252,7 +272,7 @@ public  without sharing  class evt_PlatformEventAttrs {
 		// merge
 		if (pe_attributes != null ) {
 			this.m_attributes.putAll(pe_attributes);
-		} 
+		}
 	} // end of setAttributes
 	/**
 	 * @description get our default attribute setting
@@ -266,6 +286,7 @@ public  without sharing  class evt_PlatformEventAttrs {
 			, CHECK_EVENT_NAME_s => true
 			, ADD_INSTRUMENTATION_s => true
 			, ALLOW_RETRY_AFTER_EXCEPTION_s => true
+			, EVENT_STORING_s => true
 		};
 	} // end of getDefaultAttributes
 

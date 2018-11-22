@@ -44,15 +44,16 @@
  */
 public virtual without sharing class evt_DefaultProcessHandler implements evt_IProcessEventHandler {
 
-	////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////
 	// Data Members
-	/////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////
 
 	public static final String DEFAULT_NAME = 'Unknown';
 	public static final String DEFAULT_LOG_NAME = 'Log Handler';
 	public static final String DEFAULT_ALERT_NAME = 'Alert Handler';
 	public static final String DEFAULT_ERROR_NAME = 'Error Handler';
 	public static final String DEFAULT_SUCCESS_NAME = 'Success Handler';
+	public static final String DEFAULT_STORE_NAME = 'Store Handler';
 
 	@TestVisible
 	string m_name = null;
@@ -118,11 +119,45 @@ public virtual without sharing class evt_DefaultProcessHandler implements evt_IP
 		return this.childProcess(parameter, attrs);
 	} // end of process
 
-	/////////////////////////////////////////////////////////////////////////////////////////
-	//
-	// Protected Methods
-	//
-	/////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * @description override to String to show contents
+	 * @return string of evt_DefaultProcessHandler contents
+	 */
+	public virtual override String toString() {
+
+		return
+		    'evt_DefaultProcessHandler\n' +
+		    '{' + '\n' +
+		    '   this.m_name               : ' + this.m_name + '\n' +
+		    '}';
+	} //  end of toString
+
+	/**
+	 * @description make the results from the list
+	 *
+	 * @param data collection of various data information on the event
+	 * @return String
+	 */
+	public static String makeResultsFromList(List<evt_DefaultPlatformEvent.PlatformEvtResultPOAC> data) {
+		String result = '****';
+		if ( data != null) {
+			result = '';
+			integer count = data.size();
+			for ( evt_DefaultPlatformEvent.PlatformEvtResultPOAC item : data) {
+				result += count + ').' + item.toString() + '\n';
+				count--;
+				if ( count > 0 ) {
+					result += '\n-----------------------\n';
+				}
+			}
+		}
+		return result;
+	} // end of makeResultsFromList
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+// Protected Methods
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * @description Override this method if needed
 	 *
@@ -153,30 +188,9 @@ public virtual without sharing class evt_DefaultProcessHandler implements evt_IP
 	} // end of childProcess
 
 
-	////////////////////////////////////////////////////////////////////////
-	// Private Methods
-	/////////////////////////////////////////////////////////////////////////
-	/**
-	 * @description make the results from the list
-	 *
-	 * @param data collection of various data information on the event
-	 * @return String
-	 */
-	@TestVisible
-	static String makeResultsFromList(List<evt_DefaultPlatformEvent.PlatformEvtResultPOAC> data) {
-		String result = '****';
-		if ( data != null) {
-			result = '';
-			integer count = data.size();
-			for ( evt_DefaultPlatformEvent.PlatformEvtResultPOAC item : data) {
-				result += count + ').' + item.toString() + '\n';
-				count--;
-				if ( count > 0 ) {
-					result += '\n-----------------------\n';
-				}
-			}
-		}
-		return result;
-	} // end of makeResultsFromList
+////////////////////////////////////////////////////////////////////////
+// Private Methods
+/////////////////////////////////////////////////////////////////////////
+
 
 } // end of evt_DefaultProcessHandler

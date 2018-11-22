@@ -37,11 +37,17 @@
  */
 public without sharing class evt_PlatformEvtUtilities {
 
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	// Data Members
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+
 	public static final integer MAX_STRING_SIZE = 254;
 	public static final integer MIN_STRING_SIZE = 4;
 
 	public static final String DEFAULT_PUBLISHER_NAME = 'evt_DefaultPEPublisher' ;
 	public static final String DEFAULT_CONSUMER_NAME = 'evt_DefaultPEConsumer' ;
+
+	public static final String EVENT_TYPE_TAG_s = '__e';
 
 	public static final String DEBUG_ENVIRONMENT = 'debug';
 	public static final String PROD_ENVIRONMENT = 'production';
@@ -53,8 +59,13 @@ public without sharing class evt_PlatformEvtUtilities {
 
 	}; // end of KNOWN_ENVIRONMENTS
 
+
 	@TestVisible
-	static Set<String> m_eventNames = new  Set<String>();
+	private static Set<String> m_eventNames = new  Set<String>();
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	// Public Methods
+	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * @description normalize the string (trim and size accordingly)
@@ -65,7 +76,7 @@ public without sharing class evt_PlatformEvtUtilities {
 	 * @return normalize string
 	 */
 	public static string normalizeString(String datum, Boolean dotrim) {
-		return evt_PlatformEvtUtilities.normalizeString(datum, dotrim, MAX_STRING_SIZE);
+		return evt_PlatformEvtUtilities.normalizeString(datum, dotrim, evt_PlatformEvtUtilities.MAX_STRING_SIZE);
 	}
 	/**
 	 * @description normalize the string (trim and size accordingly)
@@ -78,7 +89,7 @@ public without sharing class evt_PlatformEvtUtilities {
 	 */
 	public static string normalizeString(String datum, Boolean dotrim, integer size) {
 		string result = '';
-		integer minSize = size < MIN_STRING_SIZE ? MIN_STRING_SIZE : size > MAX_STRING_SIZE ? MAX_STRING_SIZE : size ;
+		integer minSize = size < evt_PlatformEvtUtilities.MIN_STRING_SIZE ? evt_PlatformEvtUtilities.MIN_STRING_SIZE : size > evt_PlatformEvtUtilities.MAX_STRING_SIZE ? evt_PlatformEvtUtilities.MAX_STRING_SIZE : size ;
 
 		if ( !string.isBlank(datum) ) {
 			if ( dotrim ) {
@@ -124,10 +135,10 @@ public without sharing class evt_PlatformEvtUtilities {
 	} // end of getClassInstance
 
 	public static string ensureEnviromentIsCorrectOtherwiseDebug(string currentEnv) {
-		String env = currentEnv == null ? DEBUG_ENVIRONMENT : currentEnv;
+		String env = currentEnv == null ? evt_PlatformEvtUtilities.DEBUG_ENVIRONMENT : currentEnv;
 
-		if ( !KNOWN_ENVIRONMENTS.contains(env.toLowerCase()) ) {
-			env = DEBUG_ENVIRONMENT;
+		if ( !evt_PlatformEvtUtilities.KNOWN_ENVIRONMENTS.contains(env.toLowerCase()) ) {
+			env = evt_PlatformEvtUtilities.DEBUG_ENVIRONMENT;
 		}
 		return env;
 	} // end of ensureEnviromentIsCorrectOtherwiseDebug
@@ -145,7 +156,7 @@ public without sharing class evt_PlatformEvtUtilities {
 			// any data
 			if ( objNames != null && objNames.size() > 0 ) {
 				for (String objName : objNames) {
-					if ( objName.endsWith('__e')) {
+					if ( objName.endsWith(evt_PlatformEvtUtilities.EVENT_TYPE_TAG_s)) {
 						m_eventNames.add(objName.toLowerCase());
 					}
 				}
@@ -238,6 +249,26 @@ public without sharing class evt_PlatformEvtUtilities {
 		}
 		return result;
 	} // end of getSobjectName
+	/**
+	 * @description DML limits in string form for output
+	 * @return string
+	 */
+	public static String getDMLLimitsInStringForm() {
+		return
+		    '{' + '\n' +
+		    ' getDMLStatements     : ' + Limits.getDMLStatements() + '\n' +
+		    ' getLimitAsyncCalls   : ' + Limits.getLimitAsyncCalls() + '\n' +
+		    ' getLimitQueueableJobs: ' + Limits.getLimitQueueableJobs() + '\n' +
+		    ' getCpuTime           : ' + Limits.getCpuTime() + '\n' +
+		    ' getLimitCpuTime      : ' + Limits.getLimitCpuTime() + '\n' +
+		    ' getLimitDMLRows      : ' + Limits.getLimitDMLRows() + '\n' +
+		    ' getDMLRows           : ' + Limits.getDMLRows() + '\n' +
+		    '}';
+	} // end of getDMLLimitsInStringForm
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	// Private Methods
+	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * @description Formats data for output
@@ -247,6 +278,7 @@ public without sharing class evt_PlatformEvtUtilities {
 	 *
 	 * @return String, formatted
 	 */
+	@TestVisible
 	private static String formatForOutput(LoggingLevel level, String message) {
 		String msg = string.isBlank(message) ? ' (null) ' : message,
 		       myformat = '++++ EVT OUT ++++ [{0}] -- {1} ';

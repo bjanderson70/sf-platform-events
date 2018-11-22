@@ -62,7 +62,7 @@ public virtual without sharing class evt_DefaultPEConsumer extends evt_DefaultPl
 	* @param doSerialization do we serialize the event
 	*/
 	public evt_DefaultPEConsumer(String theEventName, Boolean doSerialization) {
-		super(theEventName,doSerialization);
+		super(theEventName, doSerialization);
 	}
 
 	////////////////////////////////////////////////////////////////////////
@@ -162,7 +162,8 @@ public virtual without sharing class evt_DefaultPEConsumer extends evt_DefaultPl
 			                    , theData
 			                    , errResult
 			                    , theLogData
-			                    , theAlerts);
+			                    , theAlerts,
+			                    currentRetries);
 		}
 
 		return state;
@@ -208,6 +209,7 @@ public virtual without sharing class evt_DefaultPEConsumer extends evt_DefaultPl
 		super.addInstrumentation(super.willInstrument,
 		                         new evt_DefaultPlatformEvent.PlatformEvtResultPOAC('Consumer: consumePlatformEvent Processed')
 		                         , theLogData);
+
 		// did the child process finish successfully.
 
 		if ( state == true ) {
@@ -304,6 +306,7 @@ public virtual without sharing class evt_DefaultPEConsumer extends evt_DefaultPl
 	 * @param theData the event information (json)
 	 * @param theLogData the log information
 	 * @param theAlerts the alert information
+	 * @param currentRetries number of transaction retries
 	 * @return true, if successful
 	 */
 	@TestVisible
@@ -315,10 +318,15 @@ public virtual without sharing class evt_DefaultPEConsumer extends evt_DefaultPl
 	                              , List<evt_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult
 	                              , List<evt_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData
 	                              , List<evt_DefaultPlatformEvent.PlatformEvtResultPOAC> theAlerts
+	                              , integer currentRetries
 	                             ) {
 		// do not allow possible children to throw exceptions in our finally clause
 		// instead, catch
 		try {
+			// store data (once) ... if we have retried multiple times, only store it ONCE
+			if ( theData != null && theData.size() > 0 && currentRetries == 0) {
+				super.storeHandler(handlers, theData, attributes);
+			}
 			// add message and alert we have started
 			super.alertAddAndSend(handlers
 			                      ,  new evt_DefaultPlatformEvent.PlatformEvtResultPOAC('Consumer: Finally State')

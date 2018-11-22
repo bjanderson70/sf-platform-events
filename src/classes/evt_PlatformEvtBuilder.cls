@@ -1,11 +1,4 @@
 /**
- * Encapsulates all behaviour logic relating to the
- *
- * For more guidelines and details see
- *   https://developer.salesforce.com/page/Apex_Enterprise_Patterns_-_Domain_Layer
- * @group Domain Layer
- **/
-/**
  * Copyright (c) 2016-2018, Bill Anderson.
  * All rights reserved.
  *
@@ -82,10 +75,10 @@ public without sharing class evt_PlatformEvtBuilder {
 	} // end of ctor
 	/**
 	 * @description ctor
-	 * 
+	 *
 	 * @param theEventName the event name
 	 * @param enviroment environment to look for the event in the custom metadata
-	 * 
+	 *
 	 */
 	public evt_PlatformEvtBuilder(string theEventName, string enviroment) {
 
@@ -211,7 +204,7 @@ public without sharing class evt_PlatformEvtBuilder {
 		// we throw an exception if the event name is not found
 		// and the attributes indicate us to throw
 		if ( this.m_isBadEventName  && l_attributes.checkEvent() ) {
-			throw new evt_PlatformEventException('Platform Event is not found, check spelling [' + this.m_eventName + ']');
+			throw new evt_PlatformEventException('evt_PlatformEvtBuilder - Error: Platform Event is not found, check spelling [' + this.m_eventName + ']');
 		}
 
 		return new evt_DefaultPlatformEventModel(pubsub, myHandlers, l_attributes);
@@ -261,9 +254,10 @@ public without sharing class evt_PlatformEvtBuilder {
 	@TestVisible
 	static evt_IProcessEventHandlers buildProcessHandlers(List<evt_PlatformEvtMdtDataModel.PEDataModelInformation> elements
 	        , evt_IProcessEventHandlers handlers) {
-		
+
 		evt_PlatformEvtMdtDataModel.PEDataModelInformation element = elements != null && elements.size() > 0 ? elements[0] : null;
 		evt_IProcessEventHandlers result = handlers;
+		// no handlers, use the defaults
 		if ( result == null ) {
 			result = evt_PlatformEvtBuilder.createProcessHandlers(element);
 		}
@@ -271,30 +265,38 @@ public without sharing class evt_PlatformEvtBuilder {
 	} // end of buildProcessHandlers
 
 	/**
-	 * @description create the process handler container
+	 * @description create the process handlers container
 	 *
 	 * @param elements custom metadata of the handlers
-	 * @return instance of a process handler container
+	 * @return instance of a process handlers container
 	 */
 	@TestVisible
 	static evt_IProcessEventHandlers createProcessHandlers(evt_PlatformEvtMdtDataModel.PEDataModelInformation elements) {
 
 		Map<String, evt_IProcessEventHandler> instances = new Map<String, evt_IProcessEventHandler>  {
+			// success handler
 			evt_DefaultProcessEventHandlers.SUCCESS_HANDLER_s => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.successHandlerClass
-			, evt_DefaultProcessEventHandlers.SUCCESS_HANDLER_s),
-			evt_DefaultProcessEventHandlers.LOG_HANDLER_s => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.logHandlerClass
-			, evt_DefaultProcessEventHandlers.LOG_HANDLER_s),
-			evt_DefaultProcessEventHandlers.ERROR_HANDLER_s => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.errorHandlerClass
-			, evt_DefaultProcessEventHandlers.ERROR_HANDLER_s),
-			evt_DefaultProcessEventHandlers.ALERT_HANDLER_s => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.alertHandlerClass
+			, evt_DefaultProcessEventHandlers.SUCCESS_HANDLER_s)
+			// Log handler
+			, evt_DefaultProcessEventHandlers.LOG_HANDLER_s => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.logHandlerClass
+			, evt_DefaultProcessEventHandlers.LOG_HANDLER_s)
+			// Error Handler
+			, evt_DefaultProcessEventHandlers.ERROR_HANDLER_s => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.errorHandlerClass
+			, evt_DefaultProcessEventHandlers.ERROR_HANDLER_s)
+			// Alert Handler
+			, evt_DefaultProcessEventHandlers.ALERT_HANDLER_s => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.alertHandlerClass
 			, evt_DefaultProcessEventHandlers.ALERT_HANDLER_s)
+			// Store Handler
+			, evt_DefaultProcessEventHandlers.STORE_HANDLER_s => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.storeHandlerClass
+			, evt_DefaultProcessEventHandlers.STORE_HANDLER_s)
 		};
-
+		// default handlers
 		return new evt_DefaultProcessEventHandlers(
 		           instances.get(evt_DefaultProcessEventHandlers.LOG_HANDLER_s)
 		           , instances.get(evt_DefaultProcessEventHandlers.ERROR_HANDLER_s)
 		           , instances.get(evt_DefaultProcessEventHandlers.SUCCESS_HANDLER_s)
 		           , instances.get(evt_DefaultProcessEventHandlers.ALERT_HANDLER_s)
+		           , instances.get(evt_DefaultProcessEventHandlers.STORE_HANDLER_s)
 		       );
 
 	} // end of createProcessHandlers
@@ -315,7 +317,7 @@ public without sharing class evt_PlatformEvtBuilder {
 			result.handlerEventName(theEventName);
 			result.handlerToSerialize(serializeEvent);
 		}
-		return result == null ? new evt_DefaultPEPublisher(theEventName ,serializeEvent)  : result;
+		return result == null ? new evt_DefaultPEPublisher(theEventName , serializeEvent)  : result;
 	}// end of createEventHandler
 	/**
 	 * @description create the process handler from the FQDN
@@ -346,9 +348,12 @@ public without sharing class evt_PlatformEvtBuilder {
 	static string getEventHandlerValue(evt_PlatformEvtMdtDataModel.PEDataModelInformation element
 	                                   , PubSubType psType) {
 
-		String name = element == null ? evt_PlatformEvtUtilities.DEFAULT_CONSUMER_NAME : element.consumerClass;
+		String name = null;
+
 		if ( psType == PubSubType.PUBLISHER) {
 			name = element == null ? evt_PlatformEvtUtilities.DEFAULT_PUBLISHER_NAME : element.publisherClass;
+		} else {
+			name = element == null ? evt_PlatformEvtUtilities.DEFAULT_CONSUMER_NAME : element.consumerClass;
 		}
 
 		return name;

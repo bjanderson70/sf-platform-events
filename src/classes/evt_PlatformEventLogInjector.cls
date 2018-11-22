@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @author Bill Anderson
- * @description Platform Event Data Access Object to log
+ * @description Platform Event Data Access Object to work on (enque to process asynchromosuly)
  * @group Logs the PE information
  */
 public class evt_PlatformEventLogInjector {
@@ -38,17 +38,16 @@ public class evt_PlatformEventLogInjector {
 	/////////////////////////////////////////////////////////////////////////
 	// Data Members
 	/////////////////////////////////////////////////////////////////////////
-
-	List<evt_PlatformEventDAOLog> m_entries = new List<evt_PlatformEventDAOLog>();
-	//List<evt_Org_Events__b> m_entries_bo = new List<evt_Org_Events__b>();
+	// data access object of event information
+	@TestVisible
+	private List<evt_PlatformEventDAOLog> m_entries = new List<evt_PlatformEventDAOLog>();
 
 	/////////////////////////////////////////////////////////////////////////
 	// Ctors
 	/////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * @brief ctor
-	 * @description ctor
+	 * @description ctor, injecting one element
 	 *
 	 */
 	public evt_PlatformEventLogInjector(evt_PlatformEventDAOLog entry) {
@@ -56,28 +55,16 @@ public class evt_PlatformEventLogInjector {
 			this.m_entries.add(entry);
 		}
 	} // end of ctor
-
+	/**
+	 * @description , injecting list of elements
+	 *
+	 */
 	public evt_PlatformEventLogInjector(List<evt_PlatformEventDAOLog> entries) {
 		if (entries != null ) {
 			this.m_entries.addAll(entries);
 		}
 	} // end of ctor
-	/**
-	 * @brief ctor
-	 * @description ctor
-	 *
-	 */
-	//public evt_PlatformEventLogInjector(evt_Org_Events__b entry) {
-	//	if (entry != null ) {
-	//		this.m_entries_bo.add(entry);
-	//	}
-	//} // end of ctor
 
-	//public evt_PlatformEventLogInjector(List<evt_Org_Events__b> entries) {
-	//	if (entries != null ) {
-	//		this.m_entries_bo.addAll(entries);
-	//	}
-	//} // end of ctor
 
 	/////////////////////////////////////////////////////////////////////////
 	// Public Methods
@@ -88,58 +75,56 @@ public class evt_PlatformEventLogInjector {
 	 * @return boolean true, if no errors
 	 */
 	public boolean store() {
-		boolean results = true;
-		try {
-			evt_PlatformEventLogDataQueueHandler handler = this.getHandler(false);
-
-			// evt_PlatformEventLogDataQueueHandler is an asynchronous queuable Apex class
-			if ( handler != null ) {
-				evt_PlatformEventLogger.myInstance().log('+++ In Store :' + this.m_entries.size());
-				System.enqueueJob(handler);
-			}
-		} catch (Exception excp) {
-			results = false;
-		}
-		return results;
+		return this.processAction(false);
 	}// end of store
 	/**
 	 * @description remove data
 	 * @return boolean true, if no errors
 	 */
 	public boolean remove() {
-		boolean results = true;
-		try {
-			evt_PlatformEventLogDataQueueHandler handler = this.getHandler(true);
-
-			// evt_PlatformEventLogDataQueueHandler is an asynchronous queuable Apex class
-			if ( handler != null ) {
-				System.enqueueJob(handler);
-			}
-		} catch (Exception excp) {
-			results = false;
-		}
-		return results;
+		return this.processAction(true);
 	} // end of remove
 
 
 	/////////////////////////////////////////////////////////////////////////
 	// Private Methods
 	/////////////////////////////////////////////////////////////////////////
+	/**
+	 * @description process the the store or removal of information from the Big Object
+	 *
+	 * @param isRemovingData rue, if removing data from Big Object
+	 * @return true on success enqueing of action
+	 */
+	@TestVisible
+	private boolean processAction(boolean isRemovingData) {
+		boolean results = true;
+		try {
+			evt_PlatformEventLogDataQueueHandler handler = this.getHandler(isRemovingData);
 
+			// evt_PlatformEventLogDataQueueHandler is an asynchronous queuable Apex class
+			if ( handler != null ) {
+				evt_PlatformEventLogger.myInstance().log('+++ evt_PlatformEventLogDataQueueHandler.processAction :' + this.m_entries.size());
+				System.enqueueJob(handler);
+			}
+		} catch (Exception excp) {
+			results = false;
+		}
+		return results;
+	} // end of processAction
 	/**
 	 * @description get the appropriate handler to add/remove data
 	 *
 	 * @param doRemove true if removing data, false otherwise
 	 * @return Queue/Async Handler
 	 */
+	@TestVisible
 	private evt_PlatformEventLogDataQueueHandler getHandler(boolean doRemove) {
 		evt_PlatformEventLogDataQueueHandler handler = null;
+		// any work?
 		if ( this.m_entries.size() > 0 ) {
 			handler = new evt_PlatformEventLogDataQueueHandler(this.m_entries, doRemove);
-}
-		//} else if ( this.m_entries_bo.size() > 0 ) {
-		//	handler = new evt_PlatformEventLogDataQueueHandler(this.m_entries_bo, doRemove);
-		//}
+		}
+
 		return handler;
 	}// end of getHandler
 

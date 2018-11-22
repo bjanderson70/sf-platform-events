@@ -40,6 +40,7 @@ public without sharing class evt_DefaultProcessEventHandlers implements evt_IPro
 	public static final String ERROR_HANDLER_s = 'errorhandler';
 	public static final String SUCCESS_HANDLER_s = 'successhandler';
 	public static final String ALERT_HANDLER_s = 'alerthandler';
+	public static final String STORE_HANDLER_s = 'storehandler';
 
 	@TestVisible
 	static Map<String, evt_IProcessEventHandler> DefaultHandlers = new  Map<String, evt_IProcessEventHandler> {
@@ -47,19 +48,24 @@ public without sharing class evt_DefaultProcessEventHandlers implements evt_IPro
 		, ERROR_HANDLER_s => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_ERROR_NAME)
 		, SUCCESS_HANDLER_s => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_SUCCESS_NAME)
 		, ALERT_HANDLER_s => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_ALERT_NAME)
+		, STORE_HANDLER_s => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_STORE_NAME)
 	};
-	@TestVisible
+
 	// log information on the event
+	@TestVisible
 	evt_IProcessEventHandler m_logHandler;
-	@TestVisible
 	// process errors
+	@TestVisible
 	evt_IProcessEventHandler m_errorHandler;
-	@TestVisible
 	// process successes
-	evt_IProcessEventHandler m_successHandler;
 	@TestVisible
+	evt_IProcessEventHandler m_successHandler;
 	// process alerts/notifcations
+	@TestVisible
 	evt_IProcessEventHandler m_alertHandler;
+	// process storing of event(s)
+	@TestVisible
+	evt_IProcessEventHandler m_storeHandler;
 
 	/**
 	 * @brief ctor
@@ -67,41 +73,50 @@ public without sharing class evt_DefaultProcessEventHandlers implements evt_IPro
 	 *
 	 */
 	public evt_DefaultProcessEventHandlers() {
-		this(null, null, null, null);
+		this(null, null, null, null, null);
 	} // end of ctor
 	/**
-	 * @brief ctor
-	 * @description ctor
+	 * @description ctor (chaining to account for various handlers)
 	 *
 	 */
 	public evt_DefaultProcessEventHandlers(evt_IProcessEventHandler theLogHandler) {
-		this(theLogHandler, null, null, null);
+		this(theLogHandler, null, null, null, null);
 	} // end of ctor
 
 	public evt_DefaultProcessEventHandlers(evt_IProcessEventHandler theLogHandler
 	                                       , evt_IProcessEventHandler theErrorHandler) {
-		this(theLogHandler, theErrorHandler, null, null);
+		this(theLogHandler, theErrorHandler, null, null, null);
 	} // end of ctor
 
 	public evt_DefaultProcessEventHandlers(evt_IProcessEventHandler theLogHandler
 	                                       , evt_IProcessEventHandler theErrorHandler
 	                                       , evt_IProcessEventHandler theSuccessHandler) {
-		this(theLogHandler, theErrorHandler, theSuccessHandler, null);
+		this(theLogHandler, theErrorHandler, theSuccessHandler, null, null);
 	} // end of ctor
 
 	public evt_DefaultProcessEventHandlers(evt_IProcessEventHandler theLogHandler
 	                                       , evt_IProcessEventHandler theErrorHandler
 	                                       , evt_IProcessEventHandler theSuccessHandler
 	                                       , evt_IProcessEventHandler theAlertHandler ) {
+		this(theLogHandler, theErrorHandler, theSuccessHandler, theAlertHandler, null);
+	}// end of ctor
+
+	public evt_DefaultProcessEventHandlers(evt_IProcessEventHandler theLogHandler
+	                                       , evt_IProcessEventHandler theErrorHandler
+	                                       , evt_IProcessEventHandler theSuccessHandler
+	                                       , evt_IProcessEventHandler theAlertHandler
+	                                       , evt_IProcessEventHandler theStoreHandler ) {
 		evt_IProcessEventHandler myLogHandler = theLogHandler == null ? DefaultHandlers.get(LOG_HANDLER_s) : theLogHandler;
 		evt_IProcessEventHandler myErrorHandler = theErrorHandler == null ? DefaultHandlers.get(ERROR_HANDLER_s) : theErrorHandler;
 		evt_IProcessEventHandler mySuccessHandler = theSuccessHandler == null ? DefaultHandlers.get(SUCCESS_HANDLER_s) : theSuccessHandler;
 		evt_IProcessEventHandler myAlertHandler = theAlertHandler == null ? DefaultHandlers.get(ALERT_HANDLER_s) : theAlertHandler;
+		evt_IProcessEventHandler myStoreHandler = theStoreHandler == null ? DefaultHandlers.get(STORE_HANDLER_s) : theStoreHandler;
 
 		this.m_alertHandler = myAlertHandler;
 		this.m_successHandler = mySuccessHandler;
 		this.m_errorHandler = myErrorHandler;
 		this.m_logHandler = myLogHandler;
+		this.m_storeHandler = myStoreHandler;
 	} // end of ctor
 
 	// getters
@@ -122,13 +137,18 @@ public without sharing class evt_DefaultProcessEventHandlers implements evt_IPro
 	public evt_IProcessEventHandler alertHandler() {
 		return this.m_alertHandler;
 	}
+	// process store handler
+	public evt_IProcessEventHandler storeHandler() {
+		return this.m_storeHandler;
+	}
 
 	public static evt_IProcessEventHandler defaultHandlerByName(String name) {
 		evt_IProcessEventHandler result = null;
 		if ( !string.isBlank(name)) {
-			result = DefaultHandlers.get(name.toLowerCase());
+			String lcName = name.toLowerCase();
+			result = DefaultHandlers.get(lcName);
 			if ( result != null ) {
-				result.handlerName(name);
+				result.handlerName(lcName);
 			}
 		}
 		return result;

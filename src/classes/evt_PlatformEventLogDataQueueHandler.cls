@@ -110,13 +110,16 @@ public class evt_PlatformEventLogDataQueueHandler implements Queueable {
 	 */
 	private void process() {
 		try {
-			evt_PlatformEventLogger.myInstance().log('++++ In evt_PlatformEventLogDataQueueHandler.process : ' + Limits.getDMLStatements() + '\n' +
-			        '        +++++ getLimitAsyncCalls   : ' + Limits.getLimitAsyncCalls() + '\n' +
-			        '        +++++ getLimitQueueableJobs: ' + Limits.getLimitQueueableJobs() + '\n' +
-			        '        +++++ getCpuTime           : ' + Limits.getCpuTime() + '\n' +
-			        '        +++++ getLimitCpuTime      : ' + Limits.getLimitCpuTime() + '\n' +
-			        '        ++++++getLimitDMLRows   : ' + Limits.getLimitDMLRows() + '\n' +
-			        '        +++++ getDMLRows           : ' + Limits.getDMLRows() + '\n');
+			evt_PlatformEventLogger.myInstance().log(
+			    '++++ In evt_PlatformEventLogDataQueueHandler.process : \n' +
+			    '        +++++ size of entires      : ' + this.m_entries.size() + '\n' +
+			    '        +++++ getDMLStatements     : '	+ Limits.getDMLStatements() + '\n' +
+			    '        +++++ getLimitAsyncCalls   : ' + Limits.getLimitAsyncCalls() + '\n' +
+			    '        +++++ getLimitQueueableJobs: ' + Limits.getLimitQueueableJobs() + '\n' +
+			    '        +++++ getCpuTime           : ' + Limits.getCpuTime() + '\n' +
+			    '        +++++ getLimitCpuTime      : ' + Limits.getLimitCpuTime() + '\n' +
+			    '        ++++++getLimitDMLRows   : ' + Limits.getLimitDMLRows() + '\n' +
+			    '        +++++ getDMLRows           : ' + Limits.getDMLRows() + '\n');
 			evt_GenericDbResultHandler result = this.performDatabaseOperation();
 
 			if ( result.hasErrors() ) {
@@ -125,7 +128,7 @@ public class evt_PlatformEventLogDataQueueHandler implements Queueable {
 
 		} catch (Exception excp) {
 			// Exception occurred, output the exception message
-			evt_PlatformEventLogger.myInstance().log(excp);	
+			evt_PlatformEventLogger.myInstance().log(excp);
 		}
 
 	} // end of process

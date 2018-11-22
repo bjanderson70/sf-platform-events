@@ -44,6 +44,7 @@ public interface evt_IProcessEventHandlers {
 	evt_IProcessEventHandler successHandler();
 	// process alerts/notifcations
 	evt_IProcessEventHandler alertHandler();
-
+	// process to handle storing of event(s)
+	evt_IProcessEventHandler storeHandler();
 
 } // end of evt_IProcessEventHandlers

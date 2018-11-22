@@ -31,15 +31,8 @@
  *
  *
  * @author Bill Anderson
- * @description defines a handler. This class is called when an event is logged. Assuming the
- * Platform Attribute is serialize (== true) the event that is sent/received, this class will extract
- * the serialize event and push to the asynchronous queue to store in a Big Object. This serves two 
- * thoughts:
- *      1) Bec/ it is asynchronous it will have its own DML
- *      2) This is stored in a Big Object for AMPLE storage 
+ * @description This class is called when an event is needed to be logged.
  *
- * If you need to extract the data, use a local custom object to push data into nightly (batch).
- * 
  * @group Common Layer
  */
 public virtual without sharing class evt_DefaultProcessLogHandler  extends evt_DefaultProcessHandler {
@@ -48,7 +41,6 @@ public virtual without sharing class evt_DefaultProcessLogHandler  extends evt_D
 	////////////////////////////////////////////////////////////////////////
 	// Data Members
 	/////////////////////////////////////////////////////////////////////////
-	public static final string EVENT_TYPE_TAG_s = '__e';
 
 	/////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -73,7 +65,19 @@ public virtual without sharing class evt_DefaultProcessLogHandler  extends evt_D
 	public evt_DefaultProcessLogHandler(string name) {
 		super(name);
 	} // end of ctor
+	/**
+	* @description override to String to show contents
+	* @return string of evt_DefaultProcessHandler contents
+	*/
+	public  override String toString() {
 
+		return
+		    super.toString() + '\n' +
+		    'evt_DefaultProcessLogHandler\n' +
+		    '{' +
+		    '\n' +
+		    '}';
+	} //  end of toString
 	/////////////////////////////////////////////////////////////////////////////////////////
 	//
 	// Protected Methods
@@ -90,24 +94,29 @@ public virtual without sharing class evt_DefaultProcessLogHandler  extends evt_D
 	@TestVisible
 	protected override Object childProcess(Object parameter, evt_PlatformEventAttrs attributes) {
 		String result = '';
-		//evt_PlatformEventLogger.myInstance().log('++++ In evt_DefaultProcessLogHandler.childProcess.');
-		//evt_PlatformEventLogger.myInstance().log('        +++++ getDMLStatements     : ' + Limits.getDMLStatements() + '\n' +
-		//                             '        +++++ getLimitAsyncCalls   : ' + Limits.getLimitAsyncCalls() + '\n' +
-		//                             '        +++++ getLimitQueueableJobs: ' + Limits.getLimitQueueableJobs() + '\n' +
-		//                             '        +++++ getCpuTime           : ' + Limits.getCpuTime() + '\n' +
-		//                             '        +++++ getLimitCpuTime      : ' + Limits.getLimitCpuTime() + '\n' +
-		//                             '        ++++++getLimitAsyncCalls   : ' + Limits.getLimitAsyncCalls() + '\n' +
-		//                             '        +++++ getDMLRows           : ' + Limits.getDMLRows() + '\n');
+
 		try {
 			if ( parameter == null ) {
 				throw new NullPointerException();
 			}
 			List<evt_DefaultPlatformEvent.PlatformEvtResultPOAC> data = (List<evt_DefaultPlatformEvent.PlatformEvtResultPOAC> )parameter;
-			List<evt_PlatformEventDAOLog> dbData = evt_DefaultProcessLogHandler.getEventInformation(data);
-			// get the injector to store the data
-			evt_PlatformEventLogInjector injector = new evt_PlatformEventLogInjector(dbData);
-			injector.store();
-			result = string.valueOf(dbData);
+
+			String placeholder = '++++ MESSAGE ++++ [{0}] : evt_DefaultProcessStoreHandler.childProcess called\n {1}';
+			String results = evt_DefaultProcessHandler.makeResultsFromList(data);
+			List<String> fillers = new String[] { this.handlerName(),  results };
+			result = String.format(placeholder, fillers);
+
+			evt_PlatformEventLogger.myInstance().log(result);
+			List<String> items = new List<String>();
+
+			if ( data != null ) {
+				integer size = data.size();
+				for ( integer inx = 0; inx < size; ++inx ) {
+					items.add(data[inx].toString());
+				}
+				result = String.join(items, '\n++++++++++++++++\n');
+			}
+			evt_PlatformEventLogger.myInstance().log(result);
 
 		} catch (Exception excp) {
 			result = excp.getMessage();
@@ -115,29 +124,5 @@ public virtual without sharing class evt_DefaultProcessLogHandler  extends evt_D
 
 		return result;
 	} // end of childProcess
-	/**
-	 * @description get the event information
-	 *
-	 * @param data collection of various data information on the event
-	 * @return String, serialized event
-	 */
-	@TestVisible
-	static List<evt_PlatformEventDAOLog> getEventInformation(List<evt_DefaultPlatformEvent.PlatformEvtResultPOAC> data) {
-		List<evt_PlatformEventDAOLog> result = new List<evt_PlatformEventDAOLog>();
-		// any data to process 
-		if ( data != null) {
-
-			for ( evt_DefaultPlatformEvent.PlatformEvtResultPOAC item : data) {
-				// event, should only be one and ends in '__e'
-				// Note, the 'Misc' contains the # of events that were sent
-				if ( !string.isBlank(item.Name) &&
-				        item.Name.endsWith(evt_DefaultProcessLogHandler.EVENT_TYPE_TAG_s) ) {
-					result.add(new evt_PlatformEventDAOLog(item.Name, item.Datum, (integer)item.Misc));
-				}
-
-			}
-		}
-		return result;
-	} // end of getEventInformation
 
 } // end of evt_DefaultProcessLogHandler

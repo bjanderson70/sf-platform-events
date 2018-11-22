@@ -151,6 +151,7 @@ public virtual without sharing class evt_DefaultPlatformEvent implements evt_IEv
 	        m_retry = false,
 	        m_serializeEvent = false,
 	        m_isActive = true,
+	        m_canStore = true,
 	        m_allowRetryAfterException = true;
 	/////////////////////////////////////////////////////////////////////////
 	// Ctors
@@ -191,6 +192,7 @@ public virtual without sharing class evt_DefaultPlatformEvent implements evt_IEv
 		this.eventName = theEventName;
 		this.serializeEvent = serializeTheEvent;
 		this.isEventActive = isActive;
+
 	}// end of ctor
 	/////////////////////////////////////////////////////////////////////////
 	// Public Methods ( as define in the contract)
@@ -253,6 +255,25 @@ public virtual without sharing class evt_DefaultPlatformEvent implements evt_IEv
 	public void handlerToSerialize(Boolean doSerialize) {
 		this.serializeEvent = doSerialize;
 	} // end of handlerToSerialize
+	/**
+	 * @description override to String to show contents
+	 * @return string of evt_DefaultPlatformEvent contents
+	 */
+	public virtual  override String toString() {
+
+		return
+		    'evt_DefaultPlatformEvent\n' +
+		    '{' + '\n' +
+		    '   this.m_eventName               : ' + this.m_eventName + '\n' +
+		    '   this.m_exception               : ' + this.m_exception + '\n' +
+		    '   this.m_canLogSuccess           : ' + this.m_canLogSuccess + '\n' +
+		    '   this.m_canLogError             : ' + this.m_canLogError  + '\n' +
+		    '   this.m_serializeEvent          : ' + this.m_serializeEvent + '\n'  +
+		    '   this.m_isActive                : ' + this.m_isActive + '\n'  +
+		    '   this.m_canStore                : ' + this.m_canStore + '\n'  +
+		    '   this.m_allowRetryAfterException: ' + this.m_allowRetryAfterException + '\n'  +
+		    '}';
+	} //  end of toString
 
 	/////////////////////////////////////////////////////////////////////////
 	// Public Properties
@@ -266,6 +287,13 @@ public virtual without sharing class evt_DefaultPlatformEvent implements evt_IEv
 		get { return this.m_isActive;}
 		set { this.m_isActive = value;}
 	} // end of isEventActive
+	/**
+	* Is the event to be stored
+	*/
+	public Boolean isEventToBeStored {
+		get { return this.m_canStore;}
+		set { this.m_canStore = value;}
+	} // end of isEventToBeStored
 	/**
 	* Serialize the event(s)
 	*/
@@ -362,6 +390,7 @@ public virtual without sharing class evt_DefaultPlatformEvent implements evt_IEv
 
 		this.willInstrument = attributes.instrumentation();
 		this.allowRetryAfterException = attributes.allowRetryAfterException();
+		this.isEventToBeStored = attributes.storeEvent();
 
 		// NOTE, the user may change the event serialization via attributes!!
 		this.serializeEvent = attributes.serializeData();
@@ -371,6 +400,7 @@ public virtual without sharing class evt_DefaultPlatformEvent implements evt_IEv
 		                   || logStatus == evt_PlatformEventAttrs.EventLogging.ALL;
 		this.canLog = logStatus == evt_PlatformEventAttrs.EventLogging.ON_LOG
 		              || logStatus == evt_PlatformEventAttrs.EventLogging.ALL;
+
 
 		// ensure we have an event name (from one aspect)
 		if ( isEventBlank &&  !isParamEventName ) {
@@ -475,6 +505,20 @@ public virtual without sharing class evt_DefaultPlatformEvent implements evt_IEv
 		}
 		return false;
 	} // end of alertHandler
+	/**
+	 * @description invoke storing of event informatio
+	 *
+	 * @param handler holds our process handlers
+	 * @param data data to process, 'List<PlatformEvtResultPOAC>'
+	 * @param attributes platform events attributes
+	 */
+	@TestVisible
+	protected virtual boolean storeHandler (evt_IProcessEventHandlers handler,  List<PlatformEvtResultPOAC> data, evt_PlatformEventAttrs attributes ) {
+		if ( handler != null && handler.storeHandler() != null ) {
+			return this.callHandler(handler.storeHandler(), data, attributes);
+		}
+		return false;
+	} // end of storeHandler
 
 	/**
 	 * @description write alert messages
@@ -551,21 +595,19 @@ public virtual without sharing class evt_DefaultPlatformEvent implements evt_IEv
 
 		// just in case the serialization throws an exception
 		try {
-			integer count = 1;
-			//evt_PlatformEventLogger.myInstance().log('+++ In evt_DefaultPlatformEvent.serializeEventData :' + this.serializeEvent);
+
 			// if the user wants to serialize
 			if ( this.serializeEvent &&
 			        collectionOfEvents != null &&
 			        collectionOfEvents.size() > 0 ) {
-
+				integer count = collectionOfEvents.size();
 				result = JSON.serialize(collectionOfEvents);
-				count = collectionOfEvents.size();
 
 				// storage available and valid event name
 				if (  theList != null && !string.isBlank(this.eventName)) {
 					// add data for auditing/logging
 					theList.add(new PlatformEvtResultPOAC(this.eventName, result, (Object)count));
-				
+
 				}
 			}
 		} catch (Exception excp) {

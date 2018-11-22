@@ -31,7 +31,7 @@
  *
  *
  * @author Bill Anderson
- * @description handle database results
+ * @description handle database results. Salesforce needs to refactor this result class to make more polymorphic!
  * @group Common Layer
  */
 public with sharing class evt_GenericDbResultHandler {
@@ -66,7 +66,8 @@ public with sharing class evt_GenericDbResultHandler {
 				this.dbErrors.addAll(result[inx].getErrors());
 			}
 		}
-	}
+	}// end of ctor
+
 	public evt_GenericDbResultHandler(List<Database.UpsertResult> result) {
 		this.theResultType = ResultType.UPDATE_RESULT;
 		integer size = result.size();
@@ -75,7 +76,8 @@ public with sharing class evt_GenericDbResultHandler {
 				this.dbErrors.addAll(result[inx].getErrors());
 			}
 		}
-	}
+	}// end of ctor
+
 	public evt_GenericDbResultHandler(List<Database.DeleteResult> result) {
 		this.theResultType = ResultType.DELETE_RESULT;
 		integer size = result.size();
@@ -84,7 +86,8 @@ public with sharing class evt_GenericDbResultHandler {
 				this.dbErrors.addAll(result[inx].getErrors());
 			}
 		}
-	}
+	}// end of ctor
+
 	public evt_GenericDbResultHandler(List<Database.UndeleteResult> result) {
 		this.theResultType = ResultType.UNDELETE_RESULT;
 		integer size = result.size();
@@ -93,7 +96,7 @@ public with sharing class evt_GenericDbResultHandler {
 				this.dbErrors.addAll(result[inx].getErrors());
 			}
 		}
-	}
+	}// end of ctor
 
 	////////////////////////////////////////////////////////////////////////
 	// Public Methods
@@ -115,9 +118,10 @@ public with sharing class evt_GenericDbResultHandler {
 		return this.dbErrors.size() != 0;
 	}
 	/**
-	 * @description process errors 
+	 * @description process errors
+	 * @return List  of strings (errors)
 	 */
-	public void processErrors() {
+	public List<String> processErrors() {
 		List<String> loggedErrors = new List<String>();
 		// Operation failed, so get all errors
 		for (Database.Error err : this.dbErrors) {
@@ -128,6 +132,7 @@ public with sharing class evt_GenericDbResultHandler {
 		if ( loggedErrors.size() > 0 ) {
 			evt_PlatformEventLogger.myInstance().log(string.join(loggedErrors, '\n'));
 		}
+		return loggedErrors;
 	} // end of processErrors
 
 }

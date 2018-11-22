@@ -69,6 +69,13 @@ public virtual without sharing class evt_DefaultPEPublisher extends evt_DefaultP
 	// Public Methods
 	/////////////////////////////////////////////////////////////////////////
 
+	public virtual override String toString() {
+		return super.toString() + '\n' +
+		       '\tevt_DefaultPEPublisher\n' +
+		       '\t{' + '\n' +
+		       '\t}' + '\n'
+		       ;
+	}
 	////////////////////////////////////////////////////////////////////////
 	// Protected Methods
 	/////////////////////////////////////////////////////////////////////////
@@ -93,7 +100,6 @@ public virtual without sharing class evt_DefaultPEPublisher extends evt_DefaultP
 		List<evt_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData = new List<evt_DefaultPlatformEvent.PlatformEvtResultPOAC>();
 		// holds alert information
 		List<evt_DefaultPlatformEvent.PlatformEvtResultPOAC> theAlerts = new List<evt_DefaultPlatformEvent.PlatformEvtResultPOAC>();
-
 		// start message
 		evt_DefaultPlatformEvent.PlatformEvtResultPOAC  alertMsg = new evt_DefaultPlatformEvent.PlatformEvtResultPOAC('Publisher: Start Time');
 
@@ -122,16 +128,16 @@ public virtual without sharing class evt_DefaultPEPublisher extends evt_DefaultP
 				//
 				// Step 4: Ready to Send , Instrumentation and Process
 				state = this.readyToSend(collectionOfEvents
-			                    , handlers
-			                    , attributes
-			                    , theData
-			                    , errResult
-			                    , theLogData
-			                    , theAlerts);
+				                         , handlers
+				                         , attributes
+				                         , theData
+				                         , errResult
+				                         , theLogData
+				                         , theAlerts);
 			}
 			//
 			// Step 5: Complete Event Processing/Sending -- notify/alert
-			// 
+			//
 			// add message and alert we are after publish
 			super.alertAddAndSend(handlers
 			                      , new evt_DefaultPlatformEvent.PlatformEvtResultPOAC('Publisher: After processResults')
@@ -172,15 +178,12 @@ public virtual without sharing class evt_DefaultPEPublisher extends evt_DefaultP
 	@TestVisible
 	protected virtual List<Database.SaveResult> publish(List<SObject> parameter) {
 		//
-		//evt_PlatformEventLogger.myInstance().log('++++ In publish getDMLStatements     : ' + Limits.getDMLStatements() + '\n' +
-		//                             '        +++++ getLimitAsyncCalls   : ' + Limits.getLimitAsyncCalls() + '\n' +
-		//                             '        +++++ getLimitQueueableJobs: ' + Limits.getLimitQueueableJobs() + '\n' +
-		//                             '        +++++ getCpuTime           : ' + Limits.getCpuTime() + '\n' +
-		//                             '        +++++ getLimitCpuTime      : ' + Limits.getLimitCpuTime() + '\n' +
-		//                             '        ++++++getLimitDMLRows   : ' + Limits.getLimitDMLRows() + '\n' +
-		//                             '        +++++ getDMLRows           : ' + Limits.getDMLRows() + '\n');
+		// evt_PlatformEventLogger.myInstance().log('++++ Before Publish: \n' + evt_PlatformEvtUtilities.getDMLLimitsInStringForm());
 		// Call method to publish events
-		return EventBus.publish(parameter);
+		List<Database.SaveResult>  results = EventBus.publish(parameter);
+		// evt_PlatformEventLogger.myInstance().log('++++ After Publish: \n' + evt_PlatformEvtUtilities.getDMLLimitsInStringForm());
+
+		return results;
 	} // end of publish
 
 	/**
@@ -305,8 +308,16 @@ public virtual without sharing class evt_DefaultPEPublisher extends evt_DefaultP
 		// instead, catch
 
 		try {
-			// success of serilization ? Here we log the successful state by calling it's handler
-			if ( theData.size() > 0 && super.canLogSuccess ) {
+
+			evt_PlatformEventLogger.myInstance().log('++++' + this.toString());
+
+			// here we store event
+			if ( theData.size() > 0 && super.isEventToBeStored ) {
+				// store the event(s)
+				super.storeHandler(handlers, theData, attributes);
+			}
+			// Here we log the successful state by calling it's handler
+			if ( theData.size() > 0 && super.canLogSuccess && state == true ) {
 				// Log the success marker, this will pass in the json data
 				super.logSuccess(handlers, theData, attributes);
 			}
@@ -327,7 +338,7 @@ public virtual without sharing class evt_DefaultPEPublisher extends evt_DefaultP
 				super.logHandler(handlers, theLogData, attributes);
 			}
 			//
-			// add message and alert we are in finally 
+			// add message and alert we are in finally
 			//
 			super.alertAddAndSend(handlers
 			                      , new evt_DefaultPlatformEvent.PlatformEvtResultPOAC('Publisher: Finally State')
@@ -335,7 +346,7 @@ public virtual without sharing class evt_DefaultPEPublisher extends evt_DefaultP
 			                      , attributes);
 			//
 			// **** this is cleanup/completion to be defined by the CHILD method 'handleCompletion' ***
-			// allow the children to do any other type of completion cleanup
+			// allow the children to do any other type of completion/ cleanup they want
 			//
 			this.handleCompletion(collectionOfEvents, state, errResult, theData, theLogData, attributes );
 		} catch (Exception excp) {
