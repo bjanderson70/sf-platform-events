@@ -105,7 +105,7 @@ attributes and purpose. The names are defined in the class,
 | RETRY_COUNT_s         | **Integer**, the value between 1 and 9 (inclusive), default is 5 | Number of retries; the default is 5. Retries occur ONLY for subscribers. Within a trigger there may be an occurrence (due to latency) that had not occurred. Thus, an *EventBus.RetryException* can be thrown. The consumer will handle up-to the retry-count. |
 | CHECK_EVENT_NAME_s    | Boolean, default true                                            | Checks to determine if the event name passed in is correct.                                                                                                                                                                                                    |
 | ADD_INSTRUMENTATION_s | Boolean, default is true                                         | Gather instrumentation (start-time, end-time). The information is passed along to the log handler                                                                                                                                                              |
-|                       |                                                                  |                                                                                                                                                                                                                                                                |
+|  EVENT_STORING_s            |  Boolean, default is true                      |   Store event into Big Object                                                                                                                                                                                                                                                             |
 |                       |                                                                  |                                                                                                                                                                                                                                                                |
 
 Users can change the behavior with the use of a Map\<String,Object\>. In fact,
@@ -131,7 +131,7 @@ information contains the following fields:
 | Log Handler     | Log_Handler__c     | String                           | The log handler will be called in the consumer or the publisher with instrumentation data                                                                              |
 | Pulisher        | Pulisher__c        | String                           | The publisher to invoke. The default publisher, evt_DefaultPEPublisher, provides a consistent process for publishing. There are hooks to override behavior, if needed. |
 | Success Handler | Success_Handler__c | String                           | The success handler will be called if no errors or exceptions that occur in the consumer or the publisher                                                              |
-
+| Store Handler | Store_Handler__c | String                           | The store handler will be called to store event(s) from the consumer or the publisher                                                              |
 ![](media/b6d3052dd84cf4aca2162aa407f03ff9.png)
 
 ![](media/9d8475b9f42f608b02bc02ee666d3a28.png)
