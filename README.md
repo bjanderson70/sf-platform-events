@@ -1,7 +1,7 @@
 Platform Event Wrapper - Work In Progress (WIP)
 ===============================================
 
-See Document [PDF](https://github.com/bjanderson70/sf-platform-events/blob/master/PE-Framework.pdf)
+See Document [PDF](https://github.com/bjanderson70/sf-platform-events/blob/master/PE-Framework.pdf) as it is most up-to-date.
 
 What is it?
 ===========
