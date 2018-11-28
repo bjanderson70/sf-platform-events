@@ -305,7 +305,13 @@ public virtual without sharing class evt_DefaultPEPublisher extends evt_DefaultP
 	                              , List<evt_DefaultPlatformEvent.PlatformEvtResultPOAC> theAlerts
 	                             ) {
 		// do not allow possible children to throw exceptions in our finally clause
-		// instead, catch
+		// instead, catch. Note, if our handlers catches exceptions, continue to flow thru the
+		// process. User can decide later what to do.
+		//
+		// FUTURE ...
+		//
+		// TBD ... Allow the user to stop ALL processing if ANY exception occurs (DONE via attributes)
+		//
 
 		try {
 
@@ -316,17 +322,20 @@ public virtual without sharing class evt_DefaultPEPublisher extends evt_DefaultP
 				// store the event(s)
 				super.storeHandler(handlers, theData, attributes);
 			}
+
 			// Here we log the successful state by calling it's handler
 			if ( theData.size() > 0 && super.canLogSuccess && state == true ) {
 				// Log the success marker, this will pass in the json data
 				super.logSuccess(handlers, theData, attributes);
 			}
+
 			//
 			// here we call the error handler, if any.
 			//
 			if ( errResult.size() > 0 && super.canLogError ) {
 				super.errorHandler(handlers, errResult, attributes);
 			}
+
 			//
 			// notify the handler of the instrumented data gathered
 			//
@@ -337,6 +346,7 @@ public virtual without sharing class evt_DefaultPEPublisher extends evt_DefaultP
 				// log the information on the event
 				super.logHandler(handlers, theLogData, attributes);
 			}
+
 			//
 			// add message and alert we are in finally
 			//
@@ -344,16 +354,20 @@ public virtual without sharing class evt_DefaultPEPublisher extends evt_DefaultP
 			                      , new evt_DefaultPlatformEvent.PlatformEvtResultPOAC('Publisher: Finally State')
 			                      , theAlerts
 			                      , attributes);
+
 			//
 			// **** this is cleanup/completion to be defined by the CHILD method 'handleCompletion' ***
 			// allow the children to do any other type of completion/ cleanup they want
 			//
 			this.handleCompletion(collectionOfEvents, state, errResult, theData, theLogData, attributes );
+
 		} catch (Exception excp) {
+			evt_PlatformEventLogger.myInstance().log('evt_DefaultPEPublisher - Exception: ' + excp.getMessage());
 			// if we are here, something occur with one of the handlers
 			// save it for the callee
 			super.theException = excp;
 		}
 	} // end of finallyProcess
+
 
 } // end of evt_DefaultPEPublisher

@@ -110,8 +110,8 @@ private class evt_DefaultProcessHandlerTest {
 			result = true;
 		}
 		// assert
-		System.assertEquals(true, data.contains('exception'));
-		System.assertEquals(false, result);
+		System.assertEquals(true, data == null);
+		System.assertEquals(true, result);
 
 	}
 	@isTest

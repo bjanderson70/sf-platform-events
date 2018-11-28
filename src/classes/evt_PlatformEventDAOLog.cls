@@ -38,23 +38,18 @@ public without sharing class evt_PlatformEventDAOLog {
 	/////////////////////////////////////////////////////////////////////////
 	// Data Members
 	/////////////////////////////////////////////////////////////////////////
-	public static final string EMPTY_JSON_s = '{}';
-	public static final integer MAX_JSON_SIZE = 131072;
-
+ 
 	protected String m_JsonData;
-
 	protected String m_eventName;
 	protected integer m_count;
-
 	protected Datetime m_timestamp;
 	protected Boolean m_truncated;
-
 
 	/////////////////////////////////////////////////////////////////////////
 	// Ctors
 	/////////////////////////////////////////////////////////////////////////
 	public evt_PlatformEventDAOLog(string name) {
-		this(name, EMPTY_JSON_s, Datetime.Now(), 1);
+		this(name, evt_PlatformEvtUtilities.EMPTY_JSON_s, Datetime.Now(), 1);
 	} // end of ctor
 	/**
 	 * @brief ctor
@@ -109,14 +104,12 @@ public without sharing class evt_PlatformEventDAOLog {
 	public string json {
 		get { return this.m_JsonData;}
 		private set {
-			string data = string.isBlank(value) ? EMPTY_JSON_s : value;
+			this.m_JsonData = string.isBlank(value) ? evt_PlatformEvtUtilities.EMPTY_JSON_s : value;
 			// check the json data
-			if ( data.length() > MAX_JSON_SIZE - 1 ) {
-				this.m_JsonData = data.Substring(0, MAX_JSON_SIZE - 1);
+			if ( this.m_JsonData.length() > evt_PlatformEvtUtilities.MAX_JSON_SIZE - 1 ) {
+				this.m_JsonData = this.m_JsonData.Substring(0, evt_PlatformEvtUtilities.MAX_JSON_SIZE - 1);
 				this.truncated = 1;
-			} else {
-				this.m_JsonData = data;
-			}
+			}  
 		}
 	}// end of json
 

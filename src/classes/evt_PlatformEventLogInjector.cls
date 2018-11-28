@@ -38,6 +38,8 @@ public class evt_PlatformEventLogInjector {
 	/////////////////////////////////////////////////////////////////////////
 	// Data Members
 	/////////////////////////////////////////////////////////////////////////
+	public class evt_PlatformEventLogInjectorException extends Exception {}
+
 	// data access object of event information
 	@TestVisible
 	private List<evt_PlatformEventDAOLog> m_entries = new List<evt_PlatformEventDAOLog>();
@@ -107,7 +109,9 @@ public class evt_PlatformEventLogInjector {
 				System.enqueueJob(handler);
 			}
 		} catch (Exception excp) {
-			results = false;
+			evt_PlatformEventLogger.myInstance().log('+++ evt_PlatformEventLogInjector Exception: ' + excp.getMessage() + '\n=====' + excp.getStackTraceString() );
+			throw new evt_PlatformEventLogInjectorException(excp.getMessage());
+
 		}
 		return results;
 	} // end of processAction

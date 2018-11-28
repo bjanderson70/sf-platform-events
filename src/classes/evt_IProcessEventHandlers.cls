@@ -32,7 +32,7 @@
  *
  * @author Bill Anderson
  * @description contract define the core processing components of platform events
- * @group Common Interface Layer
+ * @group Interface Layer
  */
 public interface evt_IProcessEventHandlers {
 

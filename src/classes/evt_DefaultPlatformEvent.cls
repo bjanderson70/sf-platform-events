@@ -554,6 +554,7 @@ public virtual without sharing class evt_DefaultPlatformEvent implements evt_IEv
 		try {
 			handler.process(data, attributes);
 		} catch (Exception excp) {
+			this.theException = excp;
 			result = false;
 			// REPLACE as needed to log to custom object, etc.
 			evt_PlatformEventLogger.myInstance().log('++++ EXCEPTION +++++ evt_DefaultPlatformEvent.callHandler : Child DID NOT handle the exception' + excp.getMessage());
@@ -591,7 +592,7 @@ public virtual without sharing class evt_DefaultPlatformEvent implements evt_IEv
 	 */
 	@TestVisible
 	protected virtual String serializeEventData(List<PlatformEvtResultPOAC> theList, List<SObject> collectionOfEvents) {
-		String result = '{}';
+		String result = evt_PlatformEvtUtilities.EMPTY_JSON_s;
 
 		// just in case the serialization throws an exception
 		try {

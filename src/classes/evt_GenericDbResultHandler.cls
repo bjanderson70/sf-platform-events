@@ -34,7 +34,7 @@
  * @description handle database results. Salesforce needs to refactor this result class to make more polymorphic!
  * @group Common Layer
  */
-public with sharing class evt_GenericDbResultHandler {
+public without sharing class evt_GenericDbResultHandler {
 
 
 	////////////////////////////////////////////////////////////////////////

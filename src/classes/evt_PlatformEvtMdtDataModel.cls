@@ -54,6 +54,7 @@ public virtual without sharing class evt_PlatformEvtMdtDataModel {
 	public static final String WHERE_s = ' WHERE ';
 	public static final String FROM_s = ' FROM ';
 	public static final String SELECT_s = ' SELECT ';
+	public static final String CACHE_KEY_SEPARATOR_s = '.';
 
 	public static final String DefaultProcessHandlerClass = 'evt_DefaultProcessHandler';
 	public static final String DefaultPublisherClass = 'evt_DefaultPEPublisher';
@@ -450,7 +451,7 @@ public virtual without sharing class evt_PlatformEvtMdtDataModel {
 		String partition = string.isBlank(environment) ? '' : environment;
 		if ( !string.isBlank(label) ) {
 			if (!string.isBlank(partition) ) {
-				partition = partition + '.' + label;
+				partition = partition + CACHE_KEY_SEPARATOR_s + label;
 			} else {
 				partition = label;
 			}

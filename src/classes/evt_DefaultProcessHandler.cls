@@ -57,6 +57,8 @@ public virtual without sharing class evt_DefaultProcessHandler implements evt_IP
 
 	@TestVisible
 	string m_name = null;
+	@TestVisible
+	Exception m_exception = null;
 	/////////////////////////////////////////////////////////////////////////////////////////
 	//
 	// Ctors
@@ -86,6 +88,15 @@ public virtual without sharing class evt_DefaultProcessHandler implements evt_IP
 	// Public Methods
 	//
 	/////////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	* @description getter of the exception, if any
+	*
+	* @return the handler exception
+	*/
+	public Exception handlerException() {
+		return this.caughtException;
+	} // end of handlerException
 	/**
 	* @description set the handler name
 	*
@@ -114,7 +125,8 @@ public virtual without sharing class evt_DefaultProcessHandler implements evt_IP
 	public Object process(Object parameter, evt_PlatformEventAttrs attributes) {
 		evt_PlatformEventAttrs attrs = attributes == null ? new evt_PlatformEventAttrs() : attributes;
 		if ( parameter == null ) {
-			throw new evt_PlatformEventException('evt_DefaultProcessHandler.process requires valid data for all parameters [Object]');
+			this.caughtException = new evt_PlatformEventException('evt_DefaultProcessHandler.process requires valid data for all parameters [Object]');
+			throw this.caughtException;
 		}
 		return this.childProcess(parameter, attrs);
 	} // end of process
@@ -128,10 +140,18 @@ public virtual without sharing class evt_DefaultProcessHandler implements evt_IP
 		return
 		    'evt_DefaultProcessHandler\n' +
 		    '{' + '\n' +
-		    '   this.m_name               : ' + this.m_name + '\n' +
+		    '   this.m_name       : ' + this.m_name + '\n' +
+		    '   this.m_exception  : ' + this.m_exception + '\n' +
 		    '}';
 	} //  end of toString
 
+	/**
+	 * Any caught exception
+	 */
+	public Exception caughtException {
+		get { return this.m_exception;}
+		protected set { this.m_exception = value;}
+	} // end of caughtException
 	/**
 	 * @description make the results from the list
 	 *
@@ -153,11 +173,12 @@ public virtual without sharing class evt_DefaultProcessHandler implements evt_IP
 		}
 		return result;
 	} // end of makeResultsFromList
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-// Protected Methods
-//
-/////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////
+	//
+	// Protected Methods
+	//
+	/////////////////////////////////////////////////////////////////////////////////////////
+
 	/**
 	 * @description Override this method if needed
 	 *
@@ -169,8 +190,13 @@ public virtual without sharing class evt_DefaultProcessHandler implements evt_IP
 	@TestVisible
 	protected virtual Object childProcess(Object parameter, evt_PlatformEventAttrs attributes) {
 		String result = '';
+		// clear exception
+		this.caughtException = null;
+
 		try {
+			// valid data
 			if ( parameter == null ) {
+				// evt_DefaultProcessHandler Error: Calling "childProcess" with a NULL "parameter"'
 				throw new NullPointerException();
 			}
 			List<evt_DefaultPlatformEvent.PlatformEvtResultPOAC> data = (List<evt_DefaultPlatformEvent.PlatformEvtResultPOAC> )parameter;
@@ -180,7 +206,9 @@ public virtual without sharing class evt_DefaultProcessHandler implements evt_IP
 			result = String.format(placeholder, fillers);
 
 		} catch (Exception excp) {
-			result = excp.getMessage();
+			this.caughtException = new evt_PlatformEventException(excp);
+			evt_PlatformEventLogger.myInstance().log('evt_DefaultProcessHandler - Exception: ' + excp.getMessage());
+			throw this.caughtException;
 		}
 		evt_PlatformEventLogger.myInstance().log(result);
 
@@ -188,9 +216,9 @@ public virtual without sharing class evt_DefaultProcessHandler implements evt_IP
 	} // end of childProcess
 
 
-////////////////////////////////////////////////////////////////////////
-// Private Methods
-/////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////
+	// Private Methods
+	/////////////////////////////////////////////////////////////////////////
 
 
 } // end of evt_DefaultProcessHandler

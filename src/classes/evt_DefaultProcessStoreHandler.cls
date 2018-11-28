@@ -49,7 +49,7 @@ public with sharing class evt_DefaultProcessStoreHandler  extends evt_DefaultPro
 	/////////////////////////////////////////////////////////////////////////////////////////
 	// Data Members
 	/////////////////////////////////////////////////////////////////////////////////////////
-	 
+
 	/////////////////////////////////////////////////////////////////////////////////////////
 	//
 	// Ctors
@@ -114,6 +114,8 @@ public with sharing class evt_DefaultProcessStoreHandler  extends evt_DefaultPro
 		String result = String.format(placeholder, fillers);
 
 		evt_PlatformEventLogger.myInstance().log(result);
+		// reset our exception
+		this.caughtException = null;
 
 		try {
 			if ( parameter == null ) {
@@ -122,11 +124,14 @@ public with sharing class evt_DefaultProcessStoreHandler  extends evt_DefaultPro
 			List<evt_PlatformEventDAOLog> dbData = evt_DefaultProcessStoreHandler.getEventInformation(data);
 			// get the injector to store the data
 			evt_PlatformEventLogInjector injector = new evt_PlatformEventLogInjector(dbData);
+			// injector can throw an exception
 			injector.store();
 			result = string.valueOf(dbData);
 
 		} catch (Exception excp) {
+			this.caughtException = excp;
 			result = excp.getMessage();
+			evt_PlatformEventLogger.myInstance().log('evt_DefaultProcessStoreHandler - Exception: ' + result);
 		}
 
 		return result;

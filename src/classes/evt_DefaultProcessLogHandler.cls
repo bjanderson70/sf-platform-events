@@ -94,6 +94,7 @@ public virtual without sharing class evt_DefaultProcessLogHandler  extends evt_D
 	@TestVisible
 	protected override Object childProcess(Object parameter, evt_PlatformEventAttrs attributes) {
 		String result = '';
+		this.caughtException = null;
 
 		try {
 			if ( parameter == null ) {
@@ -119,7 +120,9 @@ public virtual without sharing class evt_DefaultProcessLogHandler  extends evt_D
 			evt_PlatformEventLogger.myInstance().log(result);
 
 		} catch (Exception excp) {
+			this.caughtException = excp;
 			result = excp.getMessage();
+			evt_PlatformEventLogger.myInstance().log('evt_DefaultProcessStoreHandler - Exception: ' + result);
 		}
 
 		return result;

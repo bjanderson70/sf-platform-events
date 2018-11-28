@@ -148,15 +148,15 @@ private class evt_PlatformEvtMdtDataModelTest {
 		String seed = '';
 
 		evt_PlatformEvtMdtDataModel ctor = new evt_PlatformEvtMdtDataModel();
-		for (integer inx = 0; inx < evt_PlatformEvtMdtDataModel.MAX_STRING_SIZE; inx++) {
+		for (integer inx = 0; inx < evt_PlatformEvtUtilities.MAX_STRING_SIZE; inx++) {
 			seed += '*';
 		}
 		// act
 		ctor.setValues(info, 'testLabel' + seed, 'testns' + seed, 'testDevName' + seed);
 		// assert
-		system.assertEquals(info.label.length(), evt_PlatformEvtMdtDataModel.MAX_STRING_SIZE );
-		system.assertEquals(info.namespacePrefix.length(), evt_PlatformEvtMdtDataModel.MAX_STRING_SIZE);
-		system.assertEquals(info.developerName.length(), evt_PlatformEvtMdtDataModel.MAX_STRING_SIZE);
+		system.assertEquals(info.label.length(), evt_PlatformEvtUtilities.MAX_STRING_SIZE );
+		system.assertEquals(info.namespacePrefix.length(), evt_PlatformEvtUtilities.MAX_STRING_SIZE);
+		system.assertEquals(info.developerName.length(), evt_PlatformEvtUtilities.MAX_STRING_SIZE);
 		system.assertEquals(info.developerName.startsWith('testDevName'), true);
 
 	} // end of testsetValues

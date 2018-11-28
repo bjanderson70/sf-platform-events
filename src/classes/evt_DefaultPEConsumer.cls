@@ -346,6 +346,7 @@ public virtual without sharing class evt_DefaultPEConsumer extends evt_DefaultPl
 			// allow the children to do any other type of cleanup
 			this.handleCompletion(collectionOfEvents, state, errResult, theData, theLogData, attributes );
 		} catch (Exception excp) {
+			evt_PlatformEventLogger.myInstance().log('evt_DefaultPEConsumer - Exception: ' + excp.getMessage());
 			super.theException = excp;
 		}
 

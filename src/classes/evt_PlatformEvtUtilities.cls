@@ -40,7 +40,9 @@ public without sharing class evt_PlatformEvtUtilities {
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	// Data Members
 	/////////////////////////////////////////////////////////////////////////////////////////////////
-
+	public static final string EMPTY_JSON_s = '{}';
+	public static final integer MAX_JSON_SIZE = 131072;
+	
 	public static final integer MAX_STRING_SIZE = 254;
 	public static final integer MIN_STRING_SIZE = 4;
 
