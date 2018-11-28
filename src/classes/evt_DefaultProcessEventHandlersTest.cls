@@ -152,13 +152,26 @@ private class evt_DefaultProcessEventHandlersTest {
 		evt_DefaultProcessEventHandlers ctor = new evt_DefaultProcessEventHandlers(
 		    one, two, three, four, five);
 
-
 		// assert
 		system.assertEquals(one, evt_DefaultProcessEventHandlers.defaultHandlerByName('one'));
 		system.assertEquals(two, evt_DefaultProcessEventHandlers.defaultHandlerByName('two'));
 		system.assertEquals(three, evt_DefaultProcessEventHandlers.defaultHandlerByName('three'));
 		system.assertEquals(four, evt_DefaultProcessEventHandlers.defaultHandlerByName('four'));
 		system.assertEquals(five, evt_DefaultProcessEventHandlers.defaultHandlerByName('five'));
+
+		
+
+		system.assertEquals('one', ctor.logHandler().handlerName());
+		system.assertEquals('two', ctor.errorHandler().handlerName());
+		system.assertEquals('three', ctor.successHandler().handlerName());
+		system.assertEquals('four', ctor.alertHandler().handlerName());
+		system.assertEquals('five', ctor.storeHandler().handlerName());
+
+		system.assertNotEquals(null, ctor.logHandler());
+		system.assertNotEquals(null, ctor.errorHandler());
+		system.assertNotEquals(null, ctor.successHandler());
+		system.assertNotEquals(null, ctor.alertHandler());
+		system.assertNotEquals(null, ctor.storeHandler());
 
 	}
 }

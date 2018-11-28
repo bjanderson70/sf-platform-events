@@ -36,12 +36,15 @@
  */
 public without sharing class evt_DefaultProcessEventHandlers implements evt_IProcessEventHandlers {
 
-	//public static final String LOG_HANDLER_s = 'loghandler';
-	//public static final String ERROR_HANDLER_s = 'errorhandler';
-	//public static final String SUCCESS_HANDLER_s = 'successhandler';
-	//public static final String ALERT_HANDLER_s = 'alerthandler';
-	//public static final String STORE_HANDLER_s = 'storehandler';
-
+	// use to index into the user-defined name
+	enum Handler_Type {
+		LOG,
+		ERROR,
+		SUCCESS,
+		ALERT,
+		STORE
+	}
+	// default handlers and names
 	@TestVisible
 	static Map<String, evt_IProcessEventHandler> m_DefaultHandlers = new  Map<String, evt_IProcessEventHandler> {
 		evt_DefaultProcessHandler.DEFAULT_LOG_NAME => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_LOG_NAME)
@@ -50,9 +53,11 @@ public without sharing class evt_DefaultProcessEventHandlers implements evt_IPro
 		, evt_DefaultProcessHandler.DEFAULT_ALERT_NAME => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_ALERT_NAME)
 		, evt_DefaultProcessHandler.DEFAULT_STORE_NAME => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_STORE_NAME)
 	};
+	// user-defined handlers ( may be same as default)
 	@TestVisible
 	static Map<String, evt_IProcessEventHandler> m_DefineHandlers = new  Map<String, evt_IProcessEventHandler>();
-
+	// user reference type to find user-defined name
+	static Map<Handler_Type, String> m_referenceByType = new Map<Handler_Type, String>();
 	/**
 	 * @brief ctor
 	 * @description ctor
@@ -104,40 +109,45 @@ public without sharing class evt_DefaultProcessEventHandlers implements evt_IPro
 		m_DefineHandlers.put(myLogHandler.handlerName().toLowerCase(), myLogHandler);
 		m_DefineHandlers.put(myStoreHandler.handlerName().toLowerCase(), myStoreHandler);
 
+		m_referenceByType.put(Handler_Type.LOG, myLogHandler.handlerName().toLowerCase());
+		m_referenceByType.put(Handler_Type.STORE, myStoreHandler.handlerName().toLowerCase());
+		m_referenceByType.put(Handler_Type.ERROR, myErrorHandler.handlerName().toLowerCase());
+		m_referenceByType.put(Handler_Type.SUCCESS, mySuccessHandler.handlerName().toLowerCase());
+		m_referenceByType.put(Handler_Type.ALERT, myAlertHandler.handlerName().toLowerCase());
+
 	} // end of ctor
 
 	// getters
 
 	// log information on the event
 	public evt_IProcessEventHandler logHandler() {
-		return evt_DefaultProcessEventHandlers.m_DefineHandlers.get(evt_DefaultProcessHandler.DEFAULT_LOG_NAME);
+		return evt_DefaultProcessEventHandlers.m_DefineHandlers.get(m_referenceByType.get(Handler_Type.LOG));
 	}
 	// process errors
 	public evt_IProcessEventHandler errorHandler() {
-		return evt_DefaultProcessEventHandlers.m_DefineHandlers.get(evt_DefaultProcessHandler.DEFAULT_ERROR_NAME);
+		return evt_DefaultProcessEventHandlers.m_DefineHandlers.get(m_referenceByType.get(Handler_Type.ERROR));
 	}
 	// process successes
 	public evt_IProcessEventHandler successHandler() {
-		return  evt_DefaultProcessEventHandlers.m_DefineHandlers.get(evt_DefaultProcessHandler.DEFAULT_SUCCESS_NAME);
+		return evt_DefaultProcessEventHandlers.m_DefineHandlers.get(m_referenceByType.get(Handler_Type.SUCCESS));
 	}
 	// process alerts/notifcations
 	public evt_IProcessEventHandler alertHandler() {
-		return  evt_DefaultProcessEventHandlers.m_DefineHandlers.get(evt_DefaultProcessHandler.DEFAULT_ALERT_NAME);
+		return evt_DefaultProcessEventHandlers.m_DefineHandlers.get(m_referenceByType.get(Handler_Type.ALERT));
 	}
 	// process store handler
 	public evt_IProcessEventHandler storeHandler() {
-		return  evt_DefaultProcessEventHandlers.m_DefineHandlers.get(evt_DefaultProcessHandler.DEFAULT_STORE_NAME);
+		return evt_DefaultProcessEventHandlers.m_DefineHandlers.get(m_referenceByType.get(Handler_Type.STORE));
 	}
 
 	public static evt_IProcessEventHandler defaultHandlerByName(String name) {
 		evt_IProcessEventHandler result = null;
 		if ( !string.isBlank(name)) {
 			String lcName = name.toLowerCase();
-			integer count = evt_DefaultProcessEventHandlers.m_DefineHandlers.size();
 
-			for ( integer inx = 0; inx < count; ++inx) {
-				result = evt_DefaultProcessEventHandlers.m_DefineHandlers.get(lcName);
-				if ( result != null ) {
+			for ( String item : evt_DefaultProcessEventHandlers.m_DefineHandlers.keyset() ) {
+				result = evt_DefaultProcessEventHandlers.m_DefineHandlers.get(item);
+				if (  result.handlerName() == lcName ) {
 					break;
 				}
 			}
