@@ -275,28 +275,28 @@ public without sharing class evt_PlatformEvtBuilder {
 
 		Map<String, evt_IProcessEventHandler> instances = new Map<String, evt_IProcessEventHandler>  {
 			// success handler
-			evt_DefaultProcessEventHandlers.SUCCESS_HANDLER_s => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.successHandlerClass
-			, evt_DefaultProcessEventHandlers.SUCCESS_HANDLER_s)
+			evt_DefaultProcessHandler.DEFAULT_SUCCESS_NAME => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.successHandlerClass
+			,evt_DefaultProcessHandler.DEFAULT_SUCCESS_NAME)
 			// Log handler
-			, evt_DefaultProcessEventHandlers.LOG_HANDLER_s => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.logHandlerClass
-			, evt_DefaultProcessEventHandlers.LOG_HANDLER_s)
+			, evt_DefaultProcessHandler.DEFAULT_LOG_NAME => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.logHandlerClass
+			, evt_DefaultProcessHandler.DEFAULT_LOG_NAME)
 			// Error Handler
-			, evt_DefaultProcessEventHandlers.ERROR_HANDLER_s => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.errorHandlerClass
-			, evt_DefaultProcessEventHandlers.ERROR_HANDLER_s)
+			, evt_DefaultProcessHandler.DEFAULT_ERROR_NAME => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.errorHandlerClass
+			, evt_DefaultProcessHandler.DEFAULT_ERROR_NAME)
 			// Alert Handler
-			, evt_DefaultProcessEventHandlers.ALERT_HANDLER_s => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.alertHandlerClass
-			, evt_DefaultProcessEventHandlers.ALERT_HANDLER_s)
+			, evt_DefaultProcessHandler.DEFAULT_ALERT_NAME  => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.alertHandlerClass
+			, evt_DefaultProcessHandler.DEFAULT_ALERT_NAME )
 			// Store Handler
-			, evt_DefaultProcessEventHandlers.STORE_HANDLER_s => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.storeHandlerClass
-			, evt_DefaultProcessEventHandlers.STORE_HANDLER_s)
+			, evt_DefaultProcessHandler.DEFAULT_STORE_NAME => evt_PlatformEvtBuilder.createProcessHandler(elements == null ? null : elements.storeHandlerClass
+			, evt_DefaultProcessHandler.DEFAULT_STORE_NAME )
 		};
 		// default handlers
 		return new evt_DefaultProcessEventHandlers(
-		           instances.get(evt_DefaultProcessEventHandlers.LOG_HANDLER_s)
-		           , instances.get(evt_DefaultProcessEventHandlers.ERROR_HANDLER_s)
-		           , instances.get(evt_DefaultProcessEventHandlers.SUCCESS_HANDLER_s)
-		           , instances.get(evt_DefaultProcessEventHandlers.ALERT_HANDLER_s)
-		           , instances.get(evt_DefaultProcessEventHandlers.STORE_HANDLER_s)
+		           instances.get(evt_DefaultProcessHandler.DEFAULT_LOG_NAME)
+		           , instances.get(evt_DefaultProcessHandler.DEFAULT_ERROR_NAME)
+		           , instances.get(evt_DefaultProcessHandler.DEFAULT_SUCCESS_NAME)
+		           , instances.get(evt_DefaultProcessHandler.DEFAULT_ALERT_NAME)
+		           , instances.get(evt_DefaultProcessHandler.DEFAULT_STORE_NAME )
 		       );
 
 	} // end of createProcessHandlers

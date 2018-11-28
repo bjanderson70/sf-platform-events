@@ -36,36 +36,22 @@
  */
 public without sharing class evt_DefaultProcessEventHandlers implements evt_IProcessEventHandlers {
 
-	public static final String LOG_HANDLER_s = 'loghandler';
-	public static final String ERROR_HANDLER_s = 'errorhandler';
-	public static final String SUCCESS_HANDLER_s = 'successhandler';
-	public static final String ALERT_HANDLER_s = 'alerthandler';
-	public static final String STORE_HANDLER_s = 'storehandler';
+	//public static final String LOG_HANDLER_s = 'loghandler';
+	//public static final String ERROR_HANDLER_s = 'errorhandler';
+	//public static final String SUCCESS_HANDLER_s = 'successhandler';
+	//public static final String ALERT_HANDLER_s = 'alerthandler';
+	//public static final String STORE_HANDLER_s = 'storehandler';
 
 	@TestVisible
-	static Map<String, evt_IProcessEventHandler> DefaultHandlers = new  Map<String, evt_IProcessEventHandler> {
-		LOG_HANDLER_s => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_LOG_NAME)
-		, ERROR_HANDLER_s => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_ERROR_NAME)
-		, SUCCESS_HANDLER_s => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_SUCCESS_NAME)
-		, ALERT_HANDLER_s => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_ALERT_NAME)
-		, STORE_HANDLER_s => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_STORE_NAME)
+	static Map<String, evt_IProcessEventHandler> m_DefaultHandlers = new  Map<String, evt_IProcessEventHandler> {
+		evt_DefaultProcessHandler.DEFAULT_LOG_NAME => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_LOG_NAME)
+		, evt_DefaultProcessHandler.DEFAULT_ERROR_NAME => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_ERROR_NAME)
+		, evt_DefaultProcessHandler.DEFAULT_SUCCESS_NAME => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_SUCCESS_NAME)
+		, evt_DefaultProcessHandler.DEFAULT_ALERT_NAME => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_ALERT_NAME)
+		, evt_DefaultProcessHandler.DEFAULT_STORE_NAME => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_STORE_NAME)
 	};
-
-	// log information on the event
 	@TestVisible
-	evt_IProcessEventHandler m_logHandler;
-	// process errors
-	@TestVisible
-	evt_IProcessEventHandler m_errorHandler;
-	// process successes
-	@TestVisible
-	evt_IProcessEventHandler m_successHandler;
-	// process alerts/notifcations
-	@TestVisible
-	evt_IProcessEventHandler m_alertHandler;
-	// process storing of event(s)
-	@TestVisible
-	evt_IProcessEventHandler m_storeHandler;
+	static Map<String, evt_IProcessEventHandler> m_DefineHandlers = new  Map<String, evt_IProcessEventHandler>();
 
 	/**
 	 * @brief ctor
@@ -106,49 +92,54 @@ public without sharing class evt_DefaultProcessEventHandlers implements evt_IPro
 	                                       , evt_IProcessEventHandler theSuccessHandler
 	                                       , evt_IProcessEventHandler theAlertHandler
 	                                       , evt_IProcessEventHandler theStoreHandler ) {
-		evt_IProcessEventHandler myLogHandler = theLogHandler == null ? DefaultHandlers.get(LOG_HANDLER_s) : theLogHandler;
-		evt_IProcessEventHandler myErrorHandler = theErrorHandler == null ? DefaultHandlers.get(ERROR_HANDLER_s) : theErrorHandler;
-		evt_IProcessEventHandler mySuccessHandler = theSuccessHandler == null ? DefaultHandlers.get(SUCCESS_HANDLER_s) : theSuccessHandler;
-		evt_IProcessEventHandler myAlertHandler = theAlertHandler == null ? DefaultHandlers.get(ALERT_HANDLER_s) : theAlertHandler;
-		evt_IProcessEventHandler myStoreHandler = theStoreHandler == null ? DefaultHandlers.get(STORE_HANDLER_s) : theStoreHandler;
+		evt_IProcessEventHandler myLogHandler = theLogHandler == null ? m_DefaultHandlers.get(evt_DefaultProcessHandler.DEFAULT_LOG_NAME) : theLogHandler;
+		evt_IProcessEventHandler myErrorHandler = theErrorHandler == null ? m_DefaultHandlers.get(evt_DefaultProcessHandler.DEFAULT_ERROR_NAME) : theErrorHandler;
+		evt_IProcessEventHandler mySuccessHandler = theSuccessHandler == null ? m_DefaultHandlers.get( evt_DefaultProcessHandler.DEFAULT_SUCCESS_NAME ) : theSuccessHandler;
+		evt_IProcessEventHandler myAlertHandler = theAlertHandler == null ? m_DefaultHandlers.get(evt_DefaultProcessHandler.DEFAULT_ALERT_NAME) : theAlertHandler;
+		evt_IProcessEventHandler myStoreHandler = theStoreHandler == null ? m_DefaultHandlers.get( evt_DefaultProcessHandler.DEFAULT_STORE_NAME ) : theStoreHandler;
 
-		this.m_alertHandler = myAlertHandler;
-		this.m_successHandler = mySuccessHandler;
-		this.m_errorHandler = myErrorHandler;
-		this.m_logHandler = myLogHandler;
-		this.m_storeHandler = myStoreHandler;
+		m_DefineHandlers.put(myAlertHandler.handlerName().toLowerCase(), myAlertHandler);
+		m_DefineHandlers.put(mySuccessHandler.handlerName().toLowerCase(), mySuccessHandler);
+		m_DefineHandlers.put(myErrorHandler.handlerName().toLowerCase(), myErrorHandler);
+		m_DefineHandlers.put(myLogHandler.handlerName().toLowerCase(), myLogHandler);
+		m_DefineHandlers.put(myStoreHandler.handlerName().toLowerCase(), myStoreHandler);
+
 	} // end of ctor
 
 	// getters
 
 	// log information on the event
 	public evt_IProcessEventHandler logHandler() {
-		return this.m_logHandler;
+		return evt_DefaultProcessEventHandlers.m_DefineHandlers.get(evt_DefaultProcessHandler.DEFAULT_LOG_NAME);
 	}
 	// process errors
 	public evt_IProcessEventHandler errorHandler() {
-		return this.m_errorHandler;
+		return evt_DefaultProcessEventHandlers.m_DefineHandlers.get(evt_DefaultProcessHandler.DEFAULT_ERROR_NAME);
 	}
 	// process successes
 	public evt_IProcessEventHandler successHandler() {
-		return this.m_successHandler;
+		return  evt_DefaultProcessEventHandlers.m_DefineHandlers.get(evt_DefaultProcessHandler.DEFAULT_SUCCESS_NAME);
 	}
 	// process alerts/notifcations
 	public evt_IProcessEventHandler alertHandler() {
-		return this.m_alertHandler;
+		return  evt_DefaultProcessEventHandlers.m_DefineHandlers.get(evt_DefaultProcessHandler.DEFAULT_ALERT_NAME);
 	}
 	// process store handler
 	public evt_IProcessEventHandler storeHandler() {
-		return this.m_storeHandler;
+		return  evt_DefaultProcessEventHandlers.m_DefineHandlers.get(evt_DefaultProcessHandler.DEFAULT_STORE_NAME);
 	}
 
 	public static evt_IProcessEventHandler defaultHandlerByName(String name) {
 		evt_IProcessEventHandler result = null;
 		if ( !string.isBlank(name)) {
 			String lcName = name.toLowerCase();
-			result = DefaultHandlers.get(lcName);
-			if ( result != null ) {
-				result.handlerName(lcName);
+			integer count = evt_DefaultProcessEventHandlers.m_DefineHandlers.size();
+
+			for ( integer inx = 0; inx < count; ++inx) {
+				result = evt_DefaultProcessEventHandlers.m_DefineHandlers.get(lcName);
+				if ( result != null ) {
+					break;
+				}
 			}
 		}
 		return result;
