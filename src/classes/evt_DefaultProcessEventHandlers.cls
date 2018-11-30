@@ -36,6 +36,10 @@
  */
 public without sharing class evt_DefaultProcessEventHandlers implements evt_IProcessEventHandlers {
 
+	/////////////////////////////////////////////////////////////////////////////////////////
+	// Data Members
+	/////////////////////////////////////////////////////////////////////////////////////////
+
 	// use to index into the user-defined name
 	enum Handler_Type {
 		LOG,
@@ -53,11 +57,15 @@ public without sharing class evt_DefaultProcessEventHandlers implements evt_IPro
 		, evt_DefaultProcessHandler.DEFAULT_ALERT_NAME => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_ALERT_NAME)
 		, evt_DefaultProcessHandler.DEFAULT_STORE_NAME => new evt_DefaultProcessHandler(evt_DefaultProcessHandler.DEFAULT_STORE_NAME)
 	};
-	// user-defined handlers ( may be same as default)
+	// user-defined handlers ( initially, same as default)
 	@TestVisible
-	static Map<String, evt_IProcessEventHandler> m_DefineHandlers = new  Map<String, evt_IProcessEventHandler>();
+	static Map<String, evt_IProcessEventHandler> m_DefineHandlers = new  Map<String, evt_IProcessEventHandler>(m_DefaultHandlers);
 	// user reference type to find user-defined name
 	static Map<Handler_Type, String> m_referenceByType = new Map<Handler_Type, String>();
+	/////////////////////////////////////////////////////////////////////////////////////////
+	// Ctors
+	/////////////////////////////////////////////////////////////////////////////////////////
+
 	/**
 	 * @brief ctor
 	 * @description ctor
@@ -117,6 +125,10 @@ public without sharing class evt_DefaultProcessEventHandlers implements evt_IPro
 
 	} // end of ctor
 
+	/////////////////////////////////////////////////////////////////////////////////////////
+	// Public Methods
+	/////////////////////////////////////////////////////////////////////////////////////////
+
 	// getters
 
 	// log information on the event
@@ -139,19 +151,27 @@ public without sharing class evt_DefaultProcessEventHandlers implements evt_IPro
 	public evt_IProcessEventHandler storeHandler() {
 		return evt_DefaultProcessEventHandlers.m_DefineHandlers.get(m_referenceByType.get(Handler_Type.STORE));
 	}
-
+	/**
+	 * @description find the process event handler by name
+	 *
+	 * @param name name stored as (default names found here 'evt_DefaultProcessHandler' )
+	 * @return evt_IProcessEventHandler, porcess event handler
+	 */
 	public static evt_IProcessEventHandler defaultHandlerByName(String name) {
 		evt_IProcessEventHandler result = null;
 		if ( !string.isBlank(name)) {
 			String lcName = name.toLowerCase();
-
+			evt_IProcessEventHandler current = null;
+			
 			for ( String item : evt_DefaultProcessEventHandlers.m_DefineHandlers.keyset() ) {
-				result = evt_DefaultProcessEventHandlers.m_DefineHandlers.get(item);
-				if (  result.handlerName() == lcName ) {
+				current = evt_DefaultProcessEventHandlers.m_DefineHandlers.get(item);
+				if (  current.handlerName() == lcName ) {
+					result = current;
 					break;
 				}
 			}
 		}
 		return result;
-	}
+	} // end of defaultHandlerByName
+
 } // end of evt_DefaultProcessEventHandlers

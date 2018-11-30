@@ -100,6 +100,7 @@ private class evt_DefaultProcessHandlersTest {
 	@isTest
 	static void testdefaultHandlerByName() {
 		// assign/act
+		evt_DefaultProcessEventHandlers hndlrs = new evt_DefaultProcessEventHandlers();
 		evt_IProcessEventHandler handler = evt_DefaultProcessEventHandlers.defaultHandlerByName(evt_DefaultProcessHandler.DEFAULT_LOG_NAME);
 		// assert
 		system.assertEquals(true, handler instanceof evt_DefaultProcessHandler);
