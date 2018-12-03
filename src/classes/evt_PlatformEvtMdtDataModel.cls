@@ -308,7 +308,7 @@ public virtual without sharing class evt_PlatformEvtMdtDataModel {
 
 		// check out local cache to save some time
 		List<PEDataModelInformation> result =  (List<PEDataModelInformation>)l1Cache.get(key);
-	 
+
 		try {
 			// still no data?
 			if ( result == null ) {
@@ -329,7 +329,7 @@ public virtual without sharing class evt_PlatformEvtMdtDataModel {
 			// process exception
 			evt_PlatformEventLogger.myInstance().log('+++ EXCEPTION +++ evt_PlatformEvtMdtDataModel.getInformationByLookup: ' + excp.getMessage());
 		}
-		 
+
 		return result;
 	} // end of getInformationByLookup
 
@@ -433,8 +433,15 @@ public virtual without sharing class evt_PlatformEvtMdtDataModel {
 			           + byValue + ' = : myValue';
 		}
 
+
+		List<SObject> result = Database.query(String.escapeSingleQuotes(clause));
+		// always a default value
+		if ( result == null || result.size() == 0 ) {
+			result = evt_PlatformEventCmdFallback.getFallbackMetadata(myValue, environment);
+		}
+
 		// get the results
-		return Database.query(String.escapeSingleQuotes(clause));
+		return result;
 
 	} // end of queryCustomMDT
 
