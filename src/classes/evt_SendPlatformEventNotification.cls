@@ -41,9 +41,11 @@ public with sharing class evt_SendPlatformEventNotification implements Queueable
 	@TestVisible
 	private List<SObject> m_entries;
 	@TestVisible
-	private String m_eventName;
+	private String m_eventName = null;
 	@TestVisible
-	private String m_environment;
+	private String m_environment = evt_PlatformEvtUtilities.TEST_ENVIRONMENT ;
+	@TestVisible
+	private Boolean m_delivered = false;
 
 	/////////////////////////////////////////////////////////////////////////
 	// Ctors
@@ -54,7 +56,7 @@ public with sharing class evt_SendPlatformEventNotification implements Queueable
 	 *
 	 */
 	public evt_SendPlatformEventNotification(List<SObject> entries) {
-		this(entries,null,null);
+		this(entries, null, null);
 	} // end of ctor
 	/**
 	 * @brief ctor
@@ -62,7 +64,7 @@ public with sharing class evt_SendPlatformEventNotification implements Queueable
 	 *
 	 */
 	public evt_SendPlatformEventNotification(List<SObject> entries, String environment) {
-		this(entries,null, environment);
+		this(entries, null, environment);
 	} // end of ctor
 
 	/**
@@ -73,8 +75,8 @@ public with sharing class evt_SendPlatformEventNotification implements Queueable
 	 *
 	 */
 	public evt_SendPlatformEventNotification(List<SObject> entries, String eventName, String environment) {
-		String evtName = String.isBlank(eventName) ? evt_PlatformEvtUtilities.getSobjectName(entries) : eventName,
-		       environ = String.isBlank(environment) ? evt_PlatformEvtUtilities.TEST_ENVIRONMENT : environment;
+		String evtName = String.isBlank(eventName) && entries != null ? evt_PlatformEvtUtilities.getSobjectName(entries) : eventName,
+		       environ = String.isBlank(environment) ? evt_PlatformEvtUtilities.PROD_ENVIRONMENT : environment;
 
 		if ( String.isBlank(evtName)) {
 			throw new evt_PlatformEventException('evt_SendPlatformEventNotification: Event Name is invalid (blank, null, or empty)');
@@ -97,21 +99,10 @@ public with sharing class evt_SendPlatformEventNotification implements Queueable
 	*/
 	public void execute(QueueableContext context) {
 
-		if ( this.m_entries == null || this.m_entries.size() == 0 ) {
-			return;
-		}
-
-		this.process();
-
-	} // end of execute
-	/**
-	 * @description process the db operation
-	 */
-	private void process() {
 		try {
 
 			evt_PlatformEventLogger.myInstance().log(
-			    '++++ In cfa_BertAccountRegistrationQueueHandler.process : \n' +
+			    '++++ In evt_SendPlatformEventNotification.process : \n' +
 			    '        +++++ size of entires      : ' + this.m_entries.size() + '\n' +
 			    '        +++++ getDMLStatements     : '	+ Limits.getDMLStatements() + '\n' +
 			    '        +++++ getLimitAsyncCalls   : ' + Limits.getLimitAsyncCalls() + '\n' +
@@ -131,14 +122,17 @@ public with sharing class evt_SendPlatformEventNotification implements Queueable
 			evt_IEventHandler publisher = builder.buildPublisher();
 			// [4] create event model
 			evt_IPlatformEventModel model = builder.build(publisher); // or builder.build(publisher,attributes);
-
+			// result of process
+			this.m_delivered = model.process(this.m_entries);
 			// [6] process/publish the event (returns true, if processed successfully)
-			evt_PlatformEventLogger.myInstance().log('++++ evt_SendPlatformEventNotification.process - result :' + model.process(this.m_entries));
+			evt_PlatformEventLogger.myInstance().log('++++ evt_SendPlatformEventNotification.process - result :' + this.m_delivered);
 
 		} catch (Exception excp) {
 			// Exception occurred, output the exception message
 			evt_PlatformEventLogger.myInstance().log(excp);
 		}
 
-	} // end of process
+
+	} // end of execute
+
 } // end of evt_SendPlatformEventNotification
