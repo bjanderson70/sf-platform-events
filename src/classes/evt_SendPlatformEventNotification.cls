@@ -133,7 +133,7 @@ public with sharing class evt_SendPlatformEventNotification implements Queueable
 			evt_IPlatformEventModel model = builder.build(publisher); // or builder.build(publisher,attributes);
 
 			// [6] process/publish the event (returns true, if processed successfully)
-			System.debug('++++ evt_SendPlatformEventNotification.process - result :' + model.process(this.m_entries));
+			evt_PlatformEventLogger.myInstance().log('++++ evt_SendPlatformEventNotification.process - result :' + model.process(this.m_entries));
 
 		} catch (Exception excp) {
 			// Exception occurred, output the exception message
