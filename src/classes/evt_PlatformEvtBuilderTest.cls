@@ -53,7 +53,7 @@ private class evt_PlatformEvtBuilderTest {
 		System.assertEquals(eventName, ctor.eventName);
 		System.assertEquals(evt_PlatformEvtUtilities.PROD_ENVIRONMENT, ctor.eventEnvironment );
 		System.assertEquals(true, ctor.validEventName);
-		System.assertEquals(true, ctor.m_elements == null);
+		System.assertEquals(true, ctor.m_elements != null);
 	}
 	@isTest
 	static void testctorWithEventAndEnv() {
@@ -66,7 +66,7 @@ private class evt_PlatformEvtBuilderTest {
 		System.assertEquals(eventName, ctor.eventName);
 		System.assertEquals(evt_PlatformEvtUtilities.DEBUG_ENVIRONMENT, ctor.eventEnvironment );
 		System.assertEquals(true, ctor.validEventName);
-		System.assertEquals(true, ctor.m_elements == null);
+		System.assertEquals(true, ctor.m_elements != null);
 	}
 	@isTest
 	static void testctorWithValidEvent() {
@@ -79,8 +79,9 @@ private class evt_PlatformEvtBuilderTest {
 		System.assertEquals(eventName, ctor.eventName);
 		System.assertEquals(evt_PlatformEvtUtilities.PROD_ENVIRONMENT, ctor.eventEnvironment );
 		System.assertEquals(false, ctor.validEventName);
-		// Note, there are NO elements bec/ the expected event is defined for the Test, not Prod, environment
-		System.assertEquals(true, ctor.m_elements == null);
+		// Note, it will ALWAYS attempts to create elements, if none are found
+		// bec/ the USER/ADMIN did not populate entries in the custom metadata type
+		System.assertEquals(true, ctor.m_elements != null);
 	}
 
 	@isTest
@@ -95,8 +96,9 @@ private class evt_PlatformEvtBuilderTest {
 		System.assertEquals(evt_PlatformEvtUtilities.DEBUG_ENVIRONMENT, ctor.eventEnvironment );
 		System.assertEquals(false, ctor.validEventName);
 		System.assertEquals(true, ctor.eventActive);
-		// Note, there are NO elements bec/ the expected event is defined for the Test, not Prod, environment
-		System.assertEquals(true, ctor.m_elements == null);
+		// Note, it will ALWAYS attempts to create elements, if none are found
+		// bec/ the USER/ADMIN did not populate entries in the custom metadata type
+		System.assertEquals(true, ctor.m_elements != null);
 	}
 
 
@@ -134,8 +136,9 @@ private class evt_PlatformEvtBuilderTest {
 		final String eventName =  'bad_event';
 		Boolean result = false;
 		evt_PlatformEvtBuilder ctor = new evt_PlatformEvtBuilder(eventName, evt_PlatformEvtUtilities.TEST_ENVIRONMENT);
-		evt_IEventHandler consumer = ctor.buildConsumer();
+		evt_IEventHandler consumer = null;
 		try {
+			consumer = ctor.buildConsumer();
 			// act
 			ctor.build(consumer);
 		} catch (evt_PlatformEventException excp) {
@@ -151,8 +154,9 @@ private class evt_PlatformEvtBuilderTest {
 		final String eventName =  'bad_event';
 		Boolean result = false;
 		evt_PlatformEvtBuilder ctor = new evt_PlatformEvtBuilder(eventName, evt_PlatformEvtUtilities.TEST_ENVIRONMENT);
-		evt_IEventHandler publisher = ctor.buildPublisher();
+		evt_IEventHandler publisher = null;
 		try {
+			publisher = ctor.buildPublisher();
 			// act
 			ctor.build(publisher);
 		} catch (evt_PlatformEventException excp) {
