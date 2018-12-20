@@ -11,7 +11,8 @@ apex-scripts/log
 build.properties
 config
 *.log
-*.sh
+*.log
+*.zip
 *.txt
 *.json
 .gitignore
