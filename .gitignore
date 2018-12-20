@@ -16,7 +16,6 @@ config
 *.txt
 *.json
 .gitignore
-myAnt
 ApexDoc
 BigObject
 debug
