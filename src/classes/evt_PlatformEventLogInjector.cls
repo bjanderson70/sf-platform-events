@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @author Bill Anderson
- * @description Platform Event Data Access Object to work on (enque to process asynchromosuly)
- * @group Logs the PE information
+ * @description Platform Event Data Access Object to work on (enque to process asynchronously)
+ * @group Domain Layer
  */
 public class evt_PlatformEventLogInjector {
 

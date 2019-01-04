@@ -317,6 +317,8 @@ private class evt_PlatformEventAttrsTest {
 		integer ce = (integer)attrs.get('test');
 		// assert
 		system.assertEquals(1, ce);
+
+
 	}
 	@isTest
 	static void testgetAttributes() {
@@ -334,4 +336,20 @@ private class evt_PlatformEventAttrsTest {
 
 	}
 
+	@isTest
+	static void teststoreEvent() {
+		// assign
+		Map<String, Object> attributes = new Map<String, Object> {
+			evt_PlatformEventAttrs.EVENT_STORING_s => true
+		};
+
+		evt_PlatformEventAttrs attrs = new evt_PlatformEventAttrs(attributes);
+		// act
+		Boolean ce = attrs.storeEvent();
+		// asser
+		system.assertEquals(true, ce);
+		attrs.storeEvent(false);
+		system.assertNotEquals(false, ce);
+
+	}
 }

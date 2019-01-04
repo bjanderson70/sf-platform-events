@@ -112,8 +112,25 @@ private class evt_DefaultProcessHandlerTest {
 		// assert
 		System.assertEquals(true, data == null);
 		System.assertEquals(true, result);
+		System.assertEquals(true, ctor.handlerException() != null);
 
 	}
+	@isTest
+	static void testhandlerException() {
+		// assig/act
+		evt_DefaultProcessHandler ctor = new evt_DefaultProcessHandler();
+		// assert
+		System.assertEquals(true, ctor.handlerException() == null);
+	}// end of testhandlerException
+
+	@isTest
+	static void testtoString() {
+		// assig/act
+		evt_DefaultProcessHandler ctor = new evt_DefaultProcessHandler();
+		// assert
+		System.assertEquals(true, ctor.toString() != null);
+	}// end of testtoString
+
 	@isTest
 	static void testmakeResultsFromList() {
 		// assign

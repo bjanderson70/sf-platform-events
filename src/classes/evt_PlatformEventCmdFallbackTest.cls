@@ -30,34 +30,37 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @author Bill Anderson
- * @description Platform Event queuable to insert or delete into/from BO
+ * @description Test the Creates default Fallback Metadata; when not found
  * @group Test Layer
  */
 @isTest
-private class evt_PlatformEventLogDataQueueHandlerTest {
+private class evt_PlatformEventCmdFallbackTest {
 	@isTest
-	static  void testevt_PlatformEventLogDataQueueHandlerEnque() {
+	static void testgetFallbackMetadata() {
 		// assign
-		DateTime now = DateTime.Now();
-		String name = 'my-test-pe-test-today';
+		string name = 'pe_test__e';
 
 		// act
-		List<evt_PlatformEventDAOLog> daoList = new List<evt_PlatformEventDAOLog> {
-			new evt_PlatformEventDAOLog(name, JSON.serialize(new pe_test__e()), now)
-		};
-		// startTest/stopTest block to force async processes
-		//   to run in the test.
-		Test.startTest();
-		// act
-		System.enqueueJob(new evt_PlatformEventLogDataQueueHandler(daoList));
-		Test.stopTest();
-		// assert -- this is bogus !
-		// the queueable calls database.insertImmediate which does not error out but then does not
-		// add the items either; as you can see I get at least one w/ no WHERE clause. Thus, tested in another
-		// way. If there is a better way ( excluding mock) please advise!
-		List<evt_Org_Events__b> big =  [select event_date__c, Event_Date_Year__c, Event_Date_Month__c, Event_Date_Day__c, Event_Truncated__c, Event_Name__c, Number_Of_Events__c, Event_JSON__c from evt_Org_Events__b  LIMIT 2];
+		List<evt_Platform_Event_Binding__mdt> mdt = evt_PlatformEventCmdFallback.getFallbackMetadata(name);
 
-		System.assertEquals(true, big != null);
+		// assert
+		system.assertEquals(true, mdt.size() > 0);
+		system.assertEquals(true, mdt[0].DeveloperName == name);
+		system.assertEquals(true, mdt[0].Environment__c == evt_PlatformEvtUtilities.TEST_ENVIRONMENT);
 
 	}
-} // end of evt_PlatformEventLogDataQueueHandlerTest
+	@isTest
+	static void testgetFallbackMetadataWithEnvironment() {
+		// assign
+		string name = 'pe_test__e';
+
+		// act
+		List<evt_Platform_Event_Binding__mdt> mdt = evt_PlatformEventCmdFallback.getFallbackMetadata(name, evt_PlatformEvtUtilities.PROD_ENVIRONMENT);
+
+		// assert
+		system.assertEquals(true, mdt.size() > 0);
+		system.assertEquals(true, mdt[0].DeveloperName == name);
+		system.assertEquals(true, mdt[0].Environment__c == evt_PlatformEvtUtilities.PROD_ENVIRONMENT);
+
+	}
+} // end of evt_PlatformEventCmdFallbackTest

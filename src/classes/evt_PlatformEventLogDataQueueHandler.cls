@@ -70,7 +70,7 @@ public class evt_PlatformEventLogDataQueueHandler implements Queueable {
 	 * @description ctor to insert/or remove items from big object
 	 *
 	 * @param entries data entries
-	 * @param remove tru if to remove data; otherwise insert
+	 * @param remove true if to remove data; otherwise insert
 	 *
 	 */
 	public evt_PlatformEventLogDataQueueHandler(List<evt_PlatformEventDAOLog> entries, boolean remove) {
@@ -110,16 +110,6 @@ public class evt_PlatformEventLogDataQueueHandler implements Queueable {
 	 */
 	private void process() {
 		try {
-			evt_PlatformEventLogger.myInstance().log(
-			    '++++ In evt_PlatformEventLogDataQueueHandler.process : \n' +
-			    '        +++++ size of entires      : ' + this.m_entries.size() + '\n' +
-			    '        +++++ getDMLStatements     : '	+ Limits.getDMLStatements() + '\n' +
-			    '        +++++ getLimitAsyncCalls   : ' + Limits.getLimitAsyncCalls() + '\n' +
-			    '        +++++ getLimitQueueableJobs: ' + Limits.getLimitQueueableJobs() + '\n' +
-			    '        +++++ getCpuTime           : ' + Limits.getCpuTime() + '\n' +
-			    '        +++++ getLimitCpuTime      : ' + Limits.getLimitCpuTime() + '\n' +
-			    '        ++++++getLimitDMLRows   : ' + Limits.getLimitDMLRows() + '\n' +
-			    '        +++++ getDMLRows           : ' + Limits.getDMLRows() + '\n');
 			evt_GenericDbResultHandler result = this.performDatabaseOperation();
 
 			if ( result.hasErrors() ) {
@@ -142,10 +132,10 @@ public class evt_PlatformEventLogDataQueueHandler implements Queueable {
 		if ( this.m_removeAction == false ) {
 			// We have to use insertImmediate() to insert big object records.
 			result = new evt_GenericDbResultHandler( Database.insertImmediate(this.m_entries));
-
 		} else {
 			result = new evt_GenericDbResultHandler(  Database.deleteImmediate(this.m_entries));
 		}
+
 		return result;
 	} // end of performDatabaseOperation
 

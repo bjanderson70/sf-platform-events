@@ -34,14 +34,7 @@
  * @group Domain Layer
  */
 public with sharing class evt_PlatformEventCmdFallback {
-	/**
-	 * @brief ctor
-	 * @description ctor
-	 *
-	 */
-	public evt_PlatformEventCmdFallback() {
-
-	} // end of ctor
+	
 	/**
 	 * @description create default values for custom metadata
 	 * 

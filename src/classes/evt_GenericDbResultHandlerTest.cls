@@ -35,7 +35,99 @@
  * @group Test Layer
  */
 @isTest
-private class evt_GenericDbResultHandlerTest
-{
+private class evt_GenericDbResultHandlerTest {
+	@isTest
+	static void testCtorevt_GenericDbResultHandlerDelete() {
+		// assign
+		List<Database.DeleteResult> result = new List<Database.DeleteResult>();
 
-}
+		// act
+		evt_GenericDbResultHandler ctor = new evt_GenericDbResultHandler(result);
+		//assert
+		System.assertEquals( evt_GenericDbResultHandler.ResultType.DELETE_RESULT, ctor.theResultType);
+		System.assertEquals( 0, ctor.dbErrors.size());
+		System.assertEquals( false, ctor.hasErrors());
+	} // end of testCtorevt_GenericDbResultHandlerDelete
+	@isTest
+	static void testCtorevt_GenericDbResultHandlerInsert() {
+		// assign
+		List<Database.SaveResult> result = new List<Database.SaveResult>();
+
+		// act
+		evt_GenericDbResultHandler ctor = new evt_GenericDbResultHandler(result);
+		//assert
+		System.assertEquals( evt_GenericDbResultHandler.ResultType.INSERT_RESULT, ctor.theResultType);
+		System.assertEquals( 0, ctor.dbErrors.size());
+		System.assertEquals( false, ctor.hasErrors());
+	} // end of testCtorevt_GenericDbResultHandlerInsert
+	@isTest
+	static void testCtorevt_GenericDbResultHandlerUnDelete() {
+		// assign
+		List<Database.UnDeleteResult> result = new List<Database.UnDeleteResult>();
+
+		// act
+		evt_GenericDbResultHandler ctor = new evt_GenericDbResultHandler(result);
+		//assert
+		System.assertEquals( evt_GenericDbResultHandler.ResultType.UNDELETE_RESULT, ctor.theResultType);
+		System.assertEquals( 0, ctor.dbErrors.size());
+		System.assertEquals( false, ctor.hasErrors());
+	} // end of testCtorevt_GenericDbResultHandlerUnDelete
+	@isTest
+	static void testCtorevt_GenericDbResultHandlerUpdate() {
+		// assign
+		List<Database.UpsertResult> result = new List<Database.UpsertResult>();
+
+		// act
+		evt_GenericDbResultHandler ctor = new evt_GenericDbResultHandler(result);
+		//assert
+		System.assertEquals( evt_GenericDbResultHandler.ResultType.UPDATE_RESULT, ctor.theResultType);
+		System.assertEquals( 0, ctor.dbErrors.size());
+		System.assertEquals( false, ctor.hasErrors());
+	} // end of testCtorevt_GenericDbResultHandlerUpdate
+
+	@isTest
+	static void testprocessErrors() {
+		// assign
+		List<Database.UpsertResult> result = new List<Database.UpsertResult>();
+
+		// act
+		evt_GenericDbResultHandler ctor = new evt_GenericDbResultHandler(result);
+		List<String> results = ctor.processErrors();
+		//assert);
+		System.assertEquals( 0, results.size());
+	} // end of testprocessErrors
+
+	@isTest
+	static void testprocessErrorsWithErrors() {
+		// assign
+		List<Database.SaveResult> results = new  List<Database.SaveResult> {
+			(Database.SaveResult)JSON.deserialize('{"success":false,"errors":[{"message":"You fool what are you doing...","statusCode":"FIELD_CUSTOM_VALIDATION_EXCEPTION"}]}', Database.SaveResult.class)
+		};
+		// act
+		evt_GenericDbResultHandler ctor = new evt_GenericDbResultHandler(results);
+		List<String> errors = ctor.processErrors();
+		//assert;
+		System.assertEquals( true, errors.size() > 0);
+		System.assertEquals( true, ctor.dbErrors.size() > 0);
+		System.assertEquals( true, ctor.hasErrors());
+	} // end of testprocessErrorsWithErrors
+ 
+	@isTest
+	static void testdbErrorsSetter() {
+		// assign
+		List<Database.SaveResult> results = new  List<Database.SaveResult> {
+			(Database.SaveResult)JSON.deserialize('{"success":false,"errors":[{"message":"You fool what are you doing...","statusCode":"FIELD_CUSTOM_VALIDATION_EXCEPTION"}]}', Database.SaveResult.class)
+		};
+		// act
+		evt_GenericDbResultHandler ctor = new evt_GenericDbResultHandler(results);
+		List<String> errors = ctor.processErrors();
+		//assert;
+		System.assertEquals( true, errors.size() > 0);
+		System.assertEquals( true, ctor.dbErrors.size() > 0);
+		System.assertEquals( true, ctor.hasErrors());
+		// act
+		ctor.dbErrors = null;
+		// assert
+		System.assertEquals( true, ctor.dbErrors == null);
+	} // end of testprocessErrorsWithErrors
+} // end of evt_GenericDbResultHandlerTest

@@ -38,7 +38,7 @@ public without sharing class evt_PlatformEventDAOLog {
 	/////////////////////////////////////////////////////////////////////////
 	// Data Members
 	/////////////////////////////////////////////////////////////////////////
- 
+
 	protected String m_JsonData;
 	protected String m_eventName;
 	protected integer m_count;
@@ -83,9 +83,10 @@ public without sharing class evt_PlatformEventDAOLog {
 	*
 	*/
 	public evt_PlatformEventDAOLog(string theName, string theJson, Datetime theTimestamp, integer eventCount ) {
-		this.json = theJson;
 		this.truncated = 0;
 		this.timestamp = theTimestamp;
+		// must be after truncated as the size may be truncated from property set
+		this.json = theJson;
 		this.name = string.isBlank(theName) ? this.timestamp.format() + evt_PlatformEvtUtilities.EVENT_TYPE_TAG_s : theName;
 		this.count = eventCount < 0 ? 1 : eventCount;
 
@@ -103,29 +104,30 @@ public without sharing class evt_PlatformEventDAOLog {
 
 	public string json {
 		get { return this.m_JsonData;}
-		private set {
+		protected set {
 			this.m_JsonData = string.isBlank(value) ? evt_PlatformEvtUtilities.EMPTY_JSON_s : value;
+			 
 			// check the json data
 			if ( this.m_JsonData.length() > evt_PlatformEvtUtilities.MAX_JSON_SIZE - 1 ) {
 				this.m_JsonData = this.m_JsonData.Substring(0, evt_PlatformEvtUtilities.MAX_JSON_SIZE - 1);
 				this.truncated = 1;
-			}  
+			}
 		}
 	}// end of json
 
 	public integer truncated {
 		get { return this.m_truncated ? 1 : 0;}
-		private set { this.m_truncated = value > 0 || value < 0 ? true : false;}
+		protected set { this.m_truncated = value != 0 ? true : false;}
 	} // end of truncated
 
 	public DateTime timestamp {
 		get { return this.m_timestamp;}
-		private set { this.m_timestamp = value== null ? Datetime.now() : value;}
+		protected set { this.m_timestamp = value == null ? Datetime.now() : value;}
 	}// end of timestamp
 
 	public integer count {
 		get { return this.m_count;}
-		private set { this.m_count =  value ;}
+		protected set { this.m_count =  value ;}
 	}// end of count
 
 	public integer day {
@@ -181,6 +183,7 @@ public without sharing class evt_PlatformEventDAOLog {
 		List<evt_PlatformEventDAOLog> results = new List<evt_PlatformEventDAOLog>();
 		if ( entries != null && entries.size() > 0) {
 			for (evt_Org_Events__b item : entries) {
+
 				results.add(new evt_PlatformEventDAOLog(
 				                item.Event_Name__c,
 				                item.Event_Json__c,

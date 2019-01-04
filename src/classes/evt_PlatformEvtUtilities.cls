@@ -42,7 +42,7 @@ public without sharing class evt_PlatformEvtUtilities {
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	public static final string EMPTY_JSON_s = '{}';
 	public static final integer MAX_JSON_SIZE = 131072;
-	
+
 	public static final integer MAX_STRING_SIZE = 254;
 	public static final integer MIN_STRING_SIZE = 4;
 
@@ -60,6 +60,32 @@ public without sharing class evt_PlatformEvtUtilities {
 		, TEST_ENVIRONMENT
 
 	}; // end of KNOWN_ENVIRONMENTS
+	/**
+	 * Month Index to 2 char string
+	 */
+	private static  Map<Integer,String> MonthIndex = new Map<Integer,String> {
+		1 => '01'
+		,2 => '02'
+		,3 => '03'
+		,4 => '04'
+		,5 => '05'
+		,6 => '06'
+		,7 => '07'
+		,8 => '08'
+		,9 => '09'
+		,10 => '10'
+		,11 => '11'
+		,12 => '12'
+	} ;
+	/**
+	 * Day indexto 2 char string
+	 */
+	private static  Map<Integer,String> DayIndex = new Map<Integer,String> {
+		1 => '01',2 => '02',3 => '03',4 => '04',5 => '05',6 => '06',7 => '07',8 => '08',9 => '09',10 => '10'
+		,11 => '11',12 => '12',13 => '13',14 => '14',15 => '15',16 => '16',17 => '17',18 => '18',19 => '19',20 => '20'
+		,21 => '21',22 => '22',23 => '23',24 => '24',25 => '25',26 => '26',27 => '27',28 => '28',29 => '29',30 => '30'
+		,31 => '31'
+	} ;
 
 
 	@TestVisible
@@ -99,9 +125,10 @@ public without sharing class evt_PlatformEvtUtilities {
 			} else {
 				result = datum;
 			}
-			if ( result.length() > minSize )
+			if ( result.length() > minSize ) {
 				// ensure size correctness
 				result = result.substring(0, minSize);
+			}
 		}
 
 		return result;
@@ -267,6 +294,27 @@ public without sharing class evt_PlatformEvtUtilities {
 		    ' getDMLRows           : ' + Limits.getDMLRows() + '\n' +
 		    '}';
 	} // end of getDMLLimitsInStringForm
+	/**
+	 * @description get month string
+	 * 
+	 * @param value month values 1 to 12
+	 * @return two char string, 1 == '01'
+	 */
+	public static String convertMonthToString(integer value){
+		integer index = value <=0 ?  1 : value > 12 ? 12 : value;
+		return MonthIndex.get(index);
+	} // end of convertMonthToString
+
+	/**
+	 * @description get month string
+	 * 
+	 * @param value month values 1 to 31
+	 * @return two char string, 1 == '01'
+	 */
+	public static String convertDayToString(integer value){
+		integer index = value <=0 ?  1 : value > 31 ? 31 : value;
+		return DayIndex.get(index);
+	} // end of convertDayToString
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	// Private Methods
