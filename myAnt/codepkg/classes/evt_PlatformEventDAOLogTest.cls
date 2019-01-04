@@ -34,7 +34,187 @@
  * @group Test Layer
  */
 @isTest
-private class evt_PlatformEventDAOLogTest
-{
-	
-}
+private class evt_PlatformEventDAOLogTest {
+
+	@isTest
+	static void nameCtor() {
+		// assign
+		DateTime now = DateTime.Now();
+		String name = 'pe_test';
+		// act
+		evt_PlatformEventDAOLog ctor = new evt_PlatformEventDAOLog(name);
+		// assert
+		System.assertEquals(true, ctor.name == name);
+		System.assertEquals(true, ctor.json == evt_PlatformEvtUtilities.EMPTY_JSON_s);
+		System.assertEquals(0, ctor.truncated);
+		System.assertEquals(true, ctor.timestamp != null);
+		System.assertEquals(1, ctor.count);
+		System.assertEquals(now.day(), ctor.day);
+		System.assertEquals(now.month(), ctor.month);
+		System.assertEquals(now.year(), ctor.year);
+
+	} // end of nameCtor
+	@isTest
+	static void nameAndJsonCtor() {
+		// assign
+		DateTime now = DateTime.Now();
+		String name = 'pe_test';
+		String json = '{"success":false,"errors":[{"message":"You fool what are you doing...","statusCode":"FIELD_CUSTOM_VALIDATION_EXCEPTION"}]}';
+
+		// act
+		evt_PlatformEventDAOLog ctor = new evt_PlatformEventDAOLog(name, json);
+		// assert
+		System.assertEquals(true, ctor.name == name);
+		System.assertEquals(true, ctor.json == json);
+		System.assertEquals(0, ctor.truncated);
+		System.assertEquals(true, ctor.timestamp != null);
+		System.assertEquals(1, ctor.count);
+		System.assertEquals(now.day(), ctor.day);
+		System.assertEquals(now.month(), ctor.month);
+		System.assertEquals(now.year(), ctor.year);
+
+	} // end of nameAndJsonCtor
+	@isTest
+	static void nameAndBadJsonCtor() {
+		// assign
+		DateTime now = DateTime.Now();
+		String name = 'pe_test';
+		String json = null;
+
+		// act
+		evt_PlatformEventDAOLog ctor = new evt_PlatformEventDAOLog(name, json);
+		// assert
+		System.assertEquals(true, ctor.name == name);
+		System.assertEquals(true, ctor.json == evt_PlatformEvtUtilities.EMPTY_JSON_s);
+		System.assertEquals(0, ctor.truncated);
+		System.assertEquals(true, ctor.timestamp != null);
+		System.assertEquals(1, ctor.count);
+		System.assertEquals(now.day(), ctor.day);
+		System.assertEquals(now.month(), ctor.month);
+		System.assertEquals(now.year(), ctor.year);
+
+	} // end of nameAndBadJsonCtor
+
+	@isTest
+	static void nameAndJsonAndTSCtor() {
+		// assign
+		DateTime now = DateTime.Now();
+		String name = 'pe_test';
+		String json = '{"success":false,"errors":[{"message":"You fool what are you doing...","statusCode":"FIELD_CUSTOM_VALIDATION_EXCEPTION"}]}';
+
+		// act
+		evt_PlatformEventDAOLog ctor = new evt_PlatformEventDAOLog(name, json, now);
+		// assert
+		System.assertEquals(true, ctor.name == name);
+		System.assertEquals(true, ctor.json == json);
+		System.assertEquals(0, ctor.truncated);
+		System.assertEquals(true, ctor.timestamp == now);
+		System.assertEquals(1, ctor.count);
+		System.assertEquals(now.day(), ctor.day);
+		System.assertEquals(now.month(), ctor.month);
+		System.assertEquals(now.year(), ctor.year);
+
+	} // end of nameAndJsonAndTSCtor
+	@isTest
+	static void nameAndJsonAndCountCtor() {
+		// assign
+		DateTime now = DateTime.Now();
+		String name = 'pe_test';
+		String json = '{"success":false,"errors":[{"message":"You fool what are you doing...","statusCode":"FIELD_CUSTOM_VALIDATION_EXCEPTION"}]}';
+
+		// act
+		evt_PlatformEventDAOLog ctor = new evt_PlatformEventDAOLog(name, json, 2);
+		// assert
+		System.assertEquals(true, ctor.name == name);
+		System.assertEquals(true, ctor.json == json);
+		System.assertEquals(0, ctor.truncated);
+		System.assertEquals(true, ctor.timestamp != null);
+		System.assertEquals(2, ctor.count);
+		System.assertEquals(now.day(), ctor.day);
+		System.assertEquals(now.month(), ctor.month);
+		System.assertEquals(now.year(), ctor.year);
+
+	} // end of nameAndJsonAndCountCtor
+
+	@isTest
+	static void testWithTruncationCtor() {
+		// assign
+		DateTime now = DateTime.Now();
+		String name = 'pe_test';
+		String json = evt_PlatformEventDAOLogTest.generateLargeString(evt_PlatformEvtUtilities.MAX_JSON_SIZE + 10);
+		// act
+		evt_PlatformEventDAOLog ctor = new evt_PlatformEventDAOLog(name, json, 1);
+		// assert
+		System.assertEquals(true, ctor.name == name);
+		System.assertEquals(true, ctor.json != json);
+		System.assertEquals(1, ctor.truncated);
+		System.assertEquals(true, ctor.timestamp != null);
+		System.assertEquals(1, ctor.count);
+		System.assertEquals(now.day(), ctor.day);
+		System.assertEquals(now.month(), ctor.month);
+		System.assertEquals(now.year(), ctor.year);
+	} // end of testWithTruncationCtor
+
+	@isTest
+	static void testmapFromBigObject() {
+		// assign
+		List<evt_Org_Events__b> items = new List<evt_Org_Events__b>();
+		integer day = 1, month = 1, year = 2019;
+		for ( integer inx = 0; inx < 2; inx++) {
+			items.add(new evt_Org_Events__b (Event_Date__c = date.newinstance(year, month, day + inx),
+			                                 Event_Date_Day__c = day + inx,
+			                                 Event_Json__c = JSON.serialize(new pe_test__e()),
+			                                 Event_Date_Month__c = month,
+			                                 Event_Name__c = 'pe_test__e',
+			                                 Event_Truncated__c = 0,
+			                                 Event_Date_Year__c = year,
+			                                 Number_Of_Events__c = 1));
+
+		}
+		// act
+		List<evt_PlatformEventDAOLog> result = evt_PlatformEventDAOLog.mapFrom(items);
+		// assert
+		System.assertEquals(items.size() , result.size());
+		for ( integer inx = 0; inx < result.size(); inx++) {
+			System.assertEquals(items[inx].Number_Of_Events__c , result[inx].count);
+			System.assertEquals(items[inx].Event_Name__c , result[inx].name);
+		}
+
+	}// end of testmapFromBigObject
+
+	@isTest
+	static void testmapFromLocalObject() {
+		// assign
+		List<evt_PlatformEventDAOLog> items = new List<evt_PlatformEventDAOLog>();
+		DateTime now = DateTime.Now();
+		String name = 'pe_test',
+		       json = '{test}';
+
+		for ( integer inx = 0; inx < 2; inx++) {
+			items.add(new evt_PlatformEventDAOLog(name, json, 2));
+
+		}
+		// act
+		List<evt_Org_Events__b> result = evt_PlatformEventDAOLog.mapFrom(items);
+		// assert
+		System.assertEquals(items.size() , result.size());
+		for ( integer inx = 0; inx < result.size(); inx++) {
+			System.assertEquals(items[inx].count, result[inx].Number_Of_Events__c);
+			System.assertEquals(items[inx].name, result[inx].Event_Name__c);
+			System.assertEquals(items[inx].json, result[inx].Event_Json__c);
+		}
+
+	}// end of testmapFromLocalObject
+
+	public static  String generateLargeString(Integer len) {
+		final String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
+		String randStr = '';
+
+		while (randStr.length() < len) {
+			randStr += chars;
+		}
+
+		return randStr;
+	} // end of generateLargeString
+
+} // end of evt_PlatformEventDAOLogTest

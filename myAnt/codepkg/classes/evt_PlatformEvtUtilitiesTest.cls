@@ -94,6 +94,14 @@ private class evt_PlatformEvtUtilitiesTest {
 		String result = evt_PlatformEvtUtilities.getSobjectName(new Account());
 		// assert
 		System.assertEquals(expected, result);
+		// act
+		result = evt_PlatformEvtUtilities.getSobjectName((List<SObject>)null);
+		// assert
+		System.assertEquals(true, result=='');
+		// act
+		result = evt_PlatformEvtUtilities.getSobjectName((SObject)null);
+		// assert
+		System.assertEquals(true, result=='');
 	}
 	@isTest
 	static void testgetTypeFromSObjectCollectionWithNoContacts() {
@@ -154,5 +162,50 @@ private class evt_PlatformEvtUtilitiesTest {
 		System.assertEquals(expected, ns);
 	} // end of testgetTypeFromSObject
 
+	@isTest
+	static void testconvertDayToString() {
+		//assign
+		// act
+		// assert
+		System.assertEquals('01', evt_PlatformEvtUtilities.convertDayToString(1));
+		System.assertEquals('01', evt_PlatformEvtUtilities.convertDayToString(0));
+		System.assertEquals('31', evt_PlatformEvtUtilities.convertDayToString(32));
+		System.assertEquals('31', evt_PlatformEvtUtilities.convertDayToString(31));
+		System.assertEquals('30', evt_PlatformEvtUtilities.convertDayToString(30));
+		System.assertEquals('10', evt_PlatformEvtUtilities.convertDayToString(10));
+		System.assertEquals('12', evt_PlatformEvtUtilities.convertDayToString(12));
+		System.assertEquals('21', evt_PlatformEvtUtilities.convertDayToString(21));
+		System.assertEquals('15', evt_PlatformEvtUtilities.convertDayToString(15));
+	}// end of testconvertDayToString
 
+	@isTest
+	static void testconvertMonthToString() {
+		//assign
+		// act
+		// assert
+		System.assertEquals('01', evt_PlatformEvtUtilities.convertMonthToString(1));
+		System.assertEquals('01', evt_PlatformEvtUtilities.convertMonthToString(0));
+		System.assertEquals('12', evt_PlatformEvtUtilities.convertMonthToString(32));
+		System.assertEquals('12', evt_PlatformEvtUtilities.convertMonthToString(12));
+
+		System.assertEquals('10', evt_PlatformEvtUtilities.convertMonthToString(10));
+		System.assertEquals('01', evt_PlatformEvtUtilities.convertMonthToString(-1));
+		System.assertEquals('02', evt_PlatformEvtUtilities.convertMonthToString(2));
+		System.assertEquals('10', evt_PlatformEvtUtilities.convertMonthToString(10));
+	}// end of convertMonthToString
+
+	@isTest
+	static void testgetDMLLimitsInStringForm() {
+		//assign
+		// act
+		// assert
+		System.assertEquals(true, evt_PlatformEvtUtilities.getDMLLimitsInStringForm() != null);
+	}// end of testgetDMLLimitsInStringForm
+	@isTest
+	static void testformatForOutput() {
+		//assign
+		// act
+		// assert
+		System.assertEquals(true, evt_PlatformEvtUtilities.formatForOutput(LoggingLevel.DEBUG, 'test') != null );
+	}// end of testformatForOutput
 }

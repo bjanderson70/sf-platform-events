@@ -97,7 +97,7 @@ public virtual without sharing class evt_PlatformEventLogger {
 		if (  Test.isRunningTest() ) {
 			evt_PlatformEventLogger.m_logInformation.add(msg);
 		}
-		System.debug(msg);
+		System.debug(LoggingLevel.INFO, msg);
 	} // end of logAsPlatformEvent
 
 	
@@ -137,7 +137,7 @@ public virtual without sharing class evt_PlatformEventLogger {
 	 */
 	private static String formatForOutput(LoggingLevel level, String message) {
 		String msg = string.isBlank(message) ? ' (null) ' : message,
-		       myformat = '++++ EVT OUT ++++ [{0}] -- {1} ';
+		       myformat = '++++ PL-EVT OUT ++++ [{0}] -- {1} ';
 		List<String> fillers = new String[] {level.name(), msg };
 		return String.format(myformat, fillers);
 

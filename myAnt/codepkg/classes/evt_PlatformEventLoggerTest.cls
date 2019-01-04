@@ -62,4 +62,11 @@ private  class evt_PlatformEventLoggerTest {
 		evt_PlatformEventLogger.myInstance().log((String)null);
 		System.assertEquals( evt_PlatformEventLogger.myInstance().inLog(null), false);
 	}
+	@isTest
+	static void testlogAsPlatformEvent() {
+		//assign/act
+		evt_PlatformEventLogger.myInstance().logAsPlatformEvent(LoggingLevel.DEBUG, 'test');
+		//assert
+		System.assertEquals( true, evt_PlatformEventLogger.myInstance().getInLog().contains('test'));
+	}
 } // end of evt_PlatformEventLoggerTest
