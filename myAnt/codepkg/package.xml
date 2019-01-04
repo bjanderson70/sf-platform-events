@@ -11,7 +11,7 @@
 		<name>CustomMetadata</name>
 	</types>
 	<types>	
-			<members>evt_DefaultPEConsumer</members>
+		<members>evt_DefaultPEConsumer</members>
 			<members>evt_DefaultPEConsumerTest</members>
 			<members>evt_DefaultPEPublisher</members>
 			<members>evt_DefaultPEPublisherTest</members>
@@ -25,7 +25,9 @@
 			<members>evt_DefaultProcessHandlersTest</members>
 			<members>evt_DefaultProcessHandlerTest</members>
 			<members>evt_DefaultProcessLogHandler</members>
+			<members>evt_DefaultProcessLogHandlerTest</members>
 			<members>evt_DefaultProcessStoreHandler</members>
+			<members>evt_DefaultProcessStoreHandlerTest</members>
 			<members>evt_GenericDbResultHandler</members>
 			<members>evt_GenericDbResultHandlerTest</members>
 			<members>evt_IEventHandler</members>
@@ -35,6 +37,7 @@
 			<members>evt_PlatformEventAttrs</members>
 			<members>evt_PlatformEventAttrsTest</members>
 			<members>evt_PlatformEventCmdFallback</members>
+			<members>evt_PlatformEventCmdFallbackTest</members>
 			<members>evt_PlatformEventDAOLog</members>
 			<members>evt_PlatformEventDAOLogTest</members>
 			<members>evt_PlatformEventException</members>
@@ -43,7 +46,9 @@
 			<members>evt_PlatformEventLogger</members>
 			<members>evt_PlatformEventLoggerTest</members>
 			<members>evt_PlatformEventLogInjector</members>
+			<members>evt_PlatformEventLogInjectorTest</members>
 			<members>evt_PlatformEventLogSelector</members>
+			<members>evt_PlatformEventLogSelectorTest</members>
 			<members>evt_PlatformEvtBuilder</members>
 			<members>evt_PlatformEvtBuilderTest</members>
 			<members>evt_PlatformEvtMdtDataModel</members>
