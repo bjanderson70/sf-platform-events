@@ -35,84 +35,75 @@
  */
 @isTest
 private class evt_PlatformEventLogInjectorTest {
-	@isTest
-	static void testCtorevt_PlatformEventLogInjector() {
-		// assign
-		String name = 'logInfo';
-		evt_PlatformEventDAOLog dao = new evt_PlatformEventDAOLog(name);
-		// act
-		evt_PlatformEventLogInjector ctor = new evt_PlatformEventLogInjector(dao);
-		// assert
-		system.assertEquals(true, ctor.m_entries.size() == 1);
-	}
-	@isTest
-	static void testCtorevt_PlatformEventLogInjectorWithNull() {
-		// assign
-		// act
-		evt_PlatformEventLogInjector ctor = new evt_PlatformEventLogInjector((evt_PlatformEventDAOLog)null);
-		// assert
-		system.assertEquals(true, ctor.m_entries.size() == 0);
-	}
-	@isTest
-	static void testCtorevt_PlatformEventLogInjectorList() {
-		// assign
-		String name = 'logInfo';
-		List<evt_PlatformEventDAOLog> daolist = new List<evt_PlatformEventDAOLog> {
-			new evt_PlatformEventDAOLog(name)
-		};
-		// act
-		evt_PlatformEventLogInjector ctor = new evt_PlatformEventLogInjector(daolist);
-		// assert
-		system.assertEquals(true, ctor.m_entries.size() == 1);
-	}
+  @isTest
+  static void testCtorevt_PlatformEventLogInjector() {
+    // assign
+    String name = 'logInfo';
+    evt_PlatformEventDAOLog dao = new evt_PlatformEventDAOLog(name);
+    // act
+    evt_PlatformEventLogInjector ctor = new evt_PlatformEventLogInjector(dao);
+    // assert
+    system.assertEquals(true, ctor.m_entries.size() == 1);
+  }
+  @isTest
+  static void testCtorevt_PlatformEventLogInjectorWithNull() {
+    // assign
+    // act
+    evt_PlatformEventLogInjector ctor = new evt_PlatformEventLogInjector((evt_PlatformEventDAOLog)null);
+    // assert
+    system.assertEquals(true, ctor.m_entries.size() == 0);
+  }
+  @isTest
+  static void testCtorevt_PlatformEventLogInjectorList() {
+    // assign
+    String name = 'logInfo';
+    List<evt_PlatformEventDAOLog> daolist = new List<evt_PlatformEventDAOLog> {
+      new evt_PlatformEventDAOLog(name)
+    };
+    // act
+    evt_PlatformEventLogInjector ctor = new evt_PlatformEventLogInjector(daolist);
+    // assert
+    system.assertEquals(true, ctor.m_entries.size() == 1);
+  }
 
-	@isTest
-	static void teststore() {
-		// assign
-		String name = 'logInfo';
-		List<evt_PlatformEventDAOLog> daolist = new List<evt_PlatformEventDAOLog> {
-			new evt_PlatformEventDAOLog(name)
-		};
-		// act
-		evt_PlatformEventLogInjector ctor = new evt_PlatformEventLogInjector(daolist);
-		Boolean result = ctor.store();
-		// assert
-		system.assertEquals(true, result);
-	}
-	@isTest
-	static void testremove() {
-		// assign
-		String name = 'logInfo';
-		List<evt_PlatformEventDAOLog> daolist = new List<evt_PlatformEventDAOLog> {
-			new evt_PlatformEventDAOLog(name)
-		};
-		// act
-		evt_PlatformEventLogInjector ctor = new evt_PlatformEventLogInjector(daolist);
-		Boolean result = ctor.remove();
-		// assert
-		system.assertEquals(true, result);
-	}
+  @isTest
+  static void teststore() {
+    // assign
+    String name = 'logInfo';
+    List<evt_PlatformEventDAOLog> daolist = new List<evt_PlatformEventDAOLog> {
+      new evt_PlatformEventDAOLog(name)
+    };
+    // act
+    evt_PlatformEventLogInjector ctor = new evt_PlatformEventLogInjector(daolist);
+    Boolean result = ctor.store();
+    // assert
+    system.assertEquals(true, result);
+  }
+  @isTest
+  static void testremove() {
+    // assign
+    String name = 'logInfo';
+    List<evt_PlatformEventDAOLog> daolist = new List<evt_PlatformEventDAOLog> {
+      new evt_PlatformEventDAOLog(name)
+    };
+    // act
+    evt_PlatformEventLogInjector ctor = new evt_PlatformEventLogInjector(daolist);
+    Boolean result = ctor.remove();
+    // assert
+    system.assertEquals(true, result);
+  }
 
-	@isTest
-	static void testGetHandler() {
-		// assign
-		String name = 'logInfo';
-		List<evt_PlatformEventDAOLog> daolist = new List<evt_PlatformEventDAOLog> {
-			new evt_PlatformEventDAOLog(name)
-		};
-		// act
-		evt_PlatformEventLogInjector ctor = new evt_PlatformEventLogInjector(daolist);
-		evt_PlatformEventLogDataQueueHandler handler = ctor.getHandler(false);
-		// assert
-		system.assertEquals(true, handler != null);
-	}
-	@isTest
-	static void testGetHandlerBadData() {
-		// assign
-		// act
-		evt_PlatformEventLogInjector ctor = new evt_PlatformEventLogInjector(null);
-		evt_PlatformEventLogDataQueueHandler handler = ctor.getHandler(false);
-		// assert
-		system.assertEquals(true, handler == null);
-	}
+  @isTest
+  static void testGetHandler() {
+    // assign
+    String name = 'logInfo';
+    List<evt_PlatformEventDAOLog> daolist = new List<evt_PlatformEventDAOLog> {
+      new evt_PlatformEventDAOLog(name)
+    };
+    // act
+    evt_PlatformEventLogInjector ctor = new evt_PlatformEventLogInjector(daolist);
+    evt_PlatformEventLogDataQueueHandler handler = ctor.getHandler(false);
+    // assert
+    system.assertEquals(true, handler != null);
+  }
 }
