@@ -3,6 +3,8 @@ Platform Event Wrapper - Work In Progress (WIP)
 
 See Document [PDF](https://github.com/bjanderson70/sf-platform-events/blob/master/PE-Framework.pdf) as it is most up-to-date. The platform wrapper should work in your environment. However, there are updates to be made but time and work constraints are impacting deliverable.
 
+Note, this package will be have the prefix changed to **accc_** so it becomes and add-on package to the *Cross Cutting Concerns* package.
+
 Deploy to Salesforce
 ====================
 
