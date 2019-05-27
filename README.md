@@ -5,6 +5,8 @@ See Document [PDF](https://github.com/bjanderson70/sf-platform-events/blob/maste
 
 Note, this package will have the prefix changed to **accc_** so it becomes and add-on package to the *Cross Cutting Concerns* package. In addition, will be adding Summer '19 features **AsyncOperationEvent**; however, this will **tie this package to version 46**. In addition, updates include more data written into the BigObject (i.e. replayids and operation ids) for recovery on a queued high-volume event.
 
+Will keep the original **evt_** in play as it will not depend on version 46. However, going forward, all modifications will be for the  **accc_** prefixed code.
+
 Deploy to Salesforce
 ====================
 
@@ -38,7 +40,7 @@ Event framework allows one to change/augment aspects at different
 levels/granularity. First, let’s define some of the salient components and their
 functions before we walk through a code-snippet.
 
-TBD: Use of Big Object for platform event repo
+Note: Use of Big Object for platform event repo -- controlled via custom metadata
 
 Salient Components
 ------------------
