@@ -21,6 +21,15 @@
         <unique>false</unique>
     </fields>
 
+   <fields>
+        <fullName>Operation_Ids__c</fullName>
+        <label>Operation Ids</label>
+        <length>131072</length>
+        <required>false</required>
+		<visibleLines>2</visibleLines>
+        <type>LongTextArea</type>
+        <unique>false</unique>
+    </fields>
     <fields>
         <fullName>Event_Date__c</fullName>
         <label>Event Date</label>
@@ -37,6 +46,14 @@
         <precision>2</precision>
     </fields>
 	
+	 <fields>
+        <fullName>Replay_Ids__c</fullName>
+        <label>ReplayIds</label>
+        <required>false</required>
+         <type>Number</type>
+        <scale>0</scale>
+        <precision>2</precision>
+    </fields>
 	 <fields>
         <fullName>Event_Date_Month__c</fullName>
         <label>Event Month</label>
