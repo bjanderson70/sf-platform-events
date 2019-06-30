@@ -34,6 +34,7 @@
 			<members>accc_IPlatformEventModel</members>
 			<members>accc_IProcessEventHandler</members>
 			<members>accc_IProcessEventHandlers</members>
+			<members>accc_PELogDataQueueHandler</members>
 			<members>accc_PlatformEventAttrs</members>
 			<members>accc_PlatformEventAttrsTest</members>
 			<members>accc_PlatformEventCmdFallback</members>
