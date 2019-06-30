@@ -43,8 +43,6 @@
 			<members>accc_PlatformEventDAOLog</members>
 			<members>accc_PlatformEventDAOLogTest</members>
 			<members>accc_PlatformEventException</members>
-			<members>accc_PlatformEventLogDataQueueHandler</members>
-			<members>accc_PlatformEventLogDataQueueHandlerTest</members>
 			<members>accc_PlatformEventLogger</members>
 			<members>accc_PlatformEventLoggerTest</members>
 			<members>accc_PlatformEventLogInjector</members>
