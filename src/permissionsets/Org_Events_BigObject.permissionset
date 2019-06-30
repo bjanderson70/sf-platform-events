@@ -5,7 +5,7 @@
  
 	 <fieldPermissions>
         <editable>true</editable>
-        <field>evt_Org_Events__b.Event_Json__c</field>
+        <field>accc_Org_Events__b.Event_Json__c</field>
         <readable>true</readable>
     </fieldPermissions>
 	
