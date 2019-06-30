@@ -26,7 +26,7 @@
         <label>Operation Ids</label>
         <length>131072</length>
         <required>false</required>
-		<visibleLines>2</visibleLines>
+	<visibleLines>2</visibleLines>
         <type>LongTextArea</type>
         <unique>false</unique>
     </fields>
@@ -49,10 +49,11 @@
 	 <fields>
         <fullName>Replay_Ids__c</fullName>
         <label>ReplayIds</label>
+        <length>131072</length>
         <required>false</required>
-         <type>Number</type>
-        <scale>0</scale>
-        <precision>2</precision>
+	<visibleLines>2</visibleLines>
+        <type>LongTextArea</type>
+        <unique>false</unique>
     </fields>
 	 <fields>
         <fullName>Event_Date_Month__c</fullName>
