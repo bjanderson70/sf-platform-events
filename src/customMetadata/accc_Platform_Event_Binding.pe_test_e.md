@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>Alert_Handler__c</field>
-        <value xsi:type="xsd:string">evt_DefaultProcessHandler</value>
+        <value xsi:type="xsd:string">accc_DefaultProcessHandler</value>
     </values>
     <values>
         <field>Allow_Consumer_Retry__c</field>
@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>Consumer__c</field>
-        <value xsi:type="xsd:string">evt_DefaultPEConsumer</value>
+        <value xsi:type="xsd:string">accc_DefaultPEConsumer</value>
     </values>
     <values>
         <field>Environment__c</field>
@@ -24,22 +24,26 @@
     </values>
     <values>
         <field>Error_Handler__c</field>
-        <value xsi:type="xsd:string">evt_DefaultProcessHandler</value>
+        <value xsi:type="xsd:string">accc_DefaultProcessHandler</value>
     </values>
     <values>
         <field>Log_Handler__c</field>
-        <value xsi:type="xsd:string">evt_DefaultProcessHandler</value>
+        <value xsi:type="xsd:string">accc_DefaultProcessHandler</value>
     </values>
     <values>
         <field>Publisher__c</field>
-        <value xsi:type="xsd:string">evt_DefaultPEPublisher</value>
+        <value xsi:type="xsd:string">accc_DefaultPEPublisher</value>
     </values>
     <values>
         <field>Serialize_Event__c</field>
         <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
+        <field>Store_Handler__c</field>
+        <value xsi:type="xsd:string">accc_DefaultProcessStoreHandler</value>
+    </values>
+    <values>
         <field>Success_Handler__c</field>
-        <value xsi:type="xsd:string">evt_DefaultProcessLogHandler</value>
+        <value xsi:type="xsd:string">accc_DefaultProcessLogHandler</value>
     </values>
 </CustomMetadata>
