@@ -63,6 +63,7 @@
 			<members>accc_AsyncOperationEventHandler</members>
 			<members>accc_BatchApexErrorEventHandler</members>
 			<members>accc_BatchApexErrorEventHandlerTest</members>
+		<members>accc_TestBatchableErrorTestJob</members>
 		<name>ApexClass</name>
     </types>
 	<types>
