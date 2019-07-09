@@ -60,6 +60,9 @@
 			<members>accc_SendPlatformEventNotification</members>
 			<members>accc_SendPlatformEventNotificationTest</members>
 			<members>accc_TestPlatformEventMock</members>
+			<members>accc_AsyncOperationEventHandler</members>
+			<members>accc_BatchApexErrorEventHandler</members>
+			<members>accc_BatchApexErrorEventHandlerTest</members>
 		<name>ApexClass</name>
     </types>
 	<types>
@@ -72,6 +75,8 @@
 	</types>
 	<types>
 		<members>pe_test_event</members>
+		<members>accc_AsyncOperationEventHandler</members>
+		<members>accc_BatchApexErrorEventHandler</members>
 		<name>ApexTrigger</name>
 	</types>
 
