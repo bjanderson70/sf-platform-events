@@ -63,7 +63,10 @@
 			<members>accc_AsyncOperationEventHandler</members>
 			<members>accc_BatchApexErrorEventHandler</members>
 			<members>accc_BatchApexErrorEventHandlerTest</members>
-		<members>accc_TestBatchableErrorTestJob</members>
+		<members>accc_MockPlatformEventServiceUtil</members>
+			<members>accc_TestBatchableErrorTestJob</members>
+		<members>accc_PlatformEventTestServiceHelper</members>
+		<members>accc_TestPlatformEventMock</members>
 		<name>ApexClass</name>
     </types>
 	<types>
