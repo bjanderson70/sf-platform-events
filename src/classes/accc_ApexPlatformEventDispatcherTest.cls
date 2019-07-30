@@ -37,6 +37,8 @@
 @isTest
 private class accc_ApexPlatformEventDispatcherTest {
 
+		/**
+		* Not Yet
 	@isTest
 	static void testrun() {
 		accc_IApexPlatformEventHandler iplatEvt = new accc_LogPlatformEventHandler();
@@ -44,13 +46,15 @@ private class accc_ApexPlatformEventDispatcherTest {
 		// there is no trigger that will have fired
 		system.assertEquals(false, accc_ApexUtilities.containsInTestLog('accc_ApexPlatformEventDispatcher.name'));
 	} // end of testrun
-
+	*/
 	@isTest
 	static void testrunWithNullParam() {
 		accc_ApexPlatformEventDispatcher.run(null);
 		system.assertEquals(false, accc_ApexUtilities.containsInTestLog('accc_ApexPlatformEventDispatcher.name'));
 	} // end of testrunWithNullParam
 
+	/*
+	 * Not Yet
 	@isTest
 	static void testrunWithTriggerFire() {
 		String msg = 'testrunWithTriggerFire';
@@ -64,4 +68,5 @@ private class accc_ApexPlatformEventDispatcherTest {
 		// there is a trigger that will have fired
 		system.assertEquals(true, accc_ApexUtilities.containsInTestLog('accc_ApexPlatformEventDispatcher.name=accc_LogPlatformEventHandler'));
 	} // end of testrunWithTriggerFire
+	*/
 } // end of accc_ApexPlatformEventDispatcherTest
