@@ -39,14 +39,16 @@ public without sharing class accc_ApexEnvironment {
 	////////////////////////////////////////////////////////////////////////////////
 	/// Data Members
 	////////////////////////////////////////////////////////////////////////////////
-
+	/*
+	 * Not Yet
+	 *
 	@TestVisible
 	private static accc_IApexRunEnvironment runtimeEnvironment =  null;
 	@TestVisible
 	private static accc_IFallbackResources runtimeFallback =  null;
 	@TestVisible
 	private static accc_IApexExceptionHandler runtimeFallbackHandler =  null;
-
+	*/
 	////////////////////////////////////////////////////////////////////////////////
 	/// Public Static Methods
 	////////////////////////////////////////////////////////////////////////////////
@@ -75,10 +77,12 @@ public without sharing class accc_ApexEnvironment {
 		return environment;
 	} // end of getEnvironment
 	/**
+	 * NOT Yet
+	 *
 	* @description get the runtime environment based on sandbox or test running.
 	* If there is a need for more control, then perhaps a custom setting/type [tbd]
 	* @return accc_IApexRunEnvironment which runtime environment
-	*/
+	*
 	public static accc_IApexRunEnvironment getRuntimeEnvironment() {
 		if ( accc_ApexEnvironment.runtimeEnvironment == null ) {
 			accc_ApexEnvironment.runtimeEnvironment = accc_ApexRunEnvironmentSingleton.getInstance();
@@ -87,7 +91,7 @@ public without sharing class accc_ApexEnvironment {
 
 		return accc_ApexEnvironment.runtimeEnvironment;
 	}  // end of getRuntimeEnvironment
-	/**
+	
 	 * @description get the runtime fallback based on test running or not.
 	 * The reason we DO NOT use the runtime environment is chicken-egg. As
 	 * ConfigMgr is used by the runtime at creation of the object factory (thus, never can created). And,
@@ -95,7 +99,7 @@ public without sharing class accc_ApexEnvironment {
 	 * we get a stack overflow. [TBD - Need to re-evaluate]
 	 *
 	 * @return accc_IFallbackResources how runtime environment fallback resources
-	 */
+	 *
 	public static accc_IFallbackResources getRuntimeFallbackResources() {
 		if ( accc_ApexEnvironment.runtimeFallback == null ) {
 
@@ -109,7 +113,7 @@ public without sharing class accc_ApexEnvironment {
 		return accc_ApexEnvironment.runtimeFallback;
 	}  // end of getRuntimeFallbackResources
 
-	/**
+	
 	* @description get the runtime fallback excp handler based on sandbox or test running.
 	* The reason we DO NOT use the runtime environment is chicken-egg. As
 	* ConfigMgr is used by the runtime at creation of the object factory. And,
@@ -117,7 +121,7 @@ public without sharing class accc_ApexEnvironment {
 	* we get a stack overflow. [TBD - Need to re-evaluate]
 	*
 	* @return accc_IApexExceptionHandler  runtime environment fallback exception handler
-	*/
+	*
 	public static accc_IApexExceptionHandler getRuntimeFallbackExceptionHandler() {
 		if ( accc_ApexEnvironment.runtimeFallbackHandler == null ) {
 			accc_ApexEnvironment.runtimeFallbackHandler = new accc_ApexExceptionHandler();
@@ -125,4 +129,5 @@ public without sharing class accc_ApexEnvironment {
 
 		return accc_ApexEnvironment.runtimeFallbackHandler;
 	}  // end of getRuntimeFallbackExceptionHandler
+	*/
 } // end of accc_ApexEnvironment
