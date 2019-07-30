@@ -68,6 +68,8 @@
 			<members>accc_TestBatchableErrorTestJob</members>
 			<members>accc_PlatformEventTestServiceHelper</members>
 			<members>accc_TestPlatformEventMock</members>
+			<members>accc_ApexUtilities</members>
+			<members>accc_ApexEnvironment</members>
 		<name>ApexClass</name>
     </types>
 	<types>
