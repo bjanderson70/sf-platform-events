@@ -311,7 +311,8 @@ public virtual without sharing class accc_ApexUtilities {
 			result = (String)theSObject.get(fieldName);
 		} catch (Exception excp) {
 			// process exception
-			accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);
+			system.debug(excp);
+			//accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);
 		}
 		return result;
 	}// end of getFieldFromSObjectSafe
@@ -601,7 +602,7 @@ public virtual without sharing class accc_ApexUtilities {
 	*/
 	public static void log(String message) {
 		if ( message != null ) {
-			accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
+			//accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
 
 			// used to test information sent from a test
 			accc_ApexUtilities.logForTesting(message);
@@ -613,7 +614,7 @@ public virtual without sharing class accc_ApexUtilities {
 			       methodName = accc_ApexUtilities.getExecutingMethod(trace),
 			       logMsg = '+++ [' + className + '] [' + methodName + '] ' + message;
 			// log it
-			runtime.logger().write(logMsg);
+			system.debug(logMsg);
 
 		}
 	} // end of log
@@ -625,11 +626,11 @@ public virtual without sharing class accc_ApexUtilities {
 	 */
 	public static void log(Exception excp) {
 		if (excp != null) {
-			accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
+			//accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
 			// used to test information sent from a test
 			accc_ApexUtilities.logForTesting(excp.getMessage());
 			// handle execptions
-			runtime.exceptionHandler().process(excp);
+			system.debug(excp);
 
 		}
 	} // end of log
@@ -640,7 +641,7 @@ public virtual without sharing class accc_ApexUtilities {
 	*/
 	public static void trace(String message) {
 		if ( message != null ) {
-			accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
+			//accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
 
 			// used to test information sent from a test
 			accc_ApexUtilities.logForTesting(message);
@@ -652,7 +653,8 @@ public virtual without sharing class accc_ApexUtilities {
 			       methodName = accc_ApexUtilities.getExecutingMethod(trace),
 			       logMsg = '+++ [' + className + '] [' + methodName + '] ' + message;
 			// log it
-			runtime.logger().trace(logMsg);
+			//runtime.logger().trace(logMsg);
+			system.debug(logMsg);
 
 		}
 	} // end of trace
@@ -807,7 +809,8 @@ public virtual without sharing class accc_ApexUtilities {
 				val = Integer.valueOf(value);
 			} catch (Exception excp) {
 				// process exception
-				accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);
+				//accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);
+				system.debug(excp);
 			}
 		}
 		return val;
