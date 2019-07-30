@@ -77,6 +77,8 @@
 		<members>accc_TestUtility</members>
 		<members>accc_ApexPlatformEventDispatcherTest</members>
 		<members>accc_ApexPlatformEventDispatcher</members>
+		<members>accc_TriggerHelperClass</members>
+		<members>accc_TriggerHelperClassTest</members>
 		<name>ApexClass</name>
     </types>
 	<types>
