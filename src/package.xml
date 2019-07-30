@@ -72,6 +72,7 @@
 			<members>accc_ApexEnvironment</members>
 			<members>accc_ApexUtilitiesTest</members>
 			<members>accc_ApexConstants</members>
+		<members>accc_ApexApplicationException</members>
 		<members>accc_TestUtility</members>
 		<name>ApexClass</name>
     </types>
