@@ -70,6 +70,7 @@
 			<members>accc_TestPlatformEventMock</members>
 			<members>accc_ApexUtilities</members>
 			<members>accc_ApexEnvironment</members>
+			<members>accc_ApexUtilitiesTest</members>
 			<members>accc_ApexConstants</members>
 		<name>ApexClass</name>
     </types>
