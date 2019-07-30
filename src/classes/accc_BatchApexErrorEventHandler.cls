@@ -56,6 +56,9 @@ public class accc_BatchApexErrorEventHandler implements accc_IApexPlatformEventH
 	 */
 	public void afterInsert(List<SObject> newItems) {
 		this.m_events = (List<BatchApexErrorEvent>)newItems;
+		/*
+		 * TO BE INTEGRATED ONCE MERGED
+		 *
 		// Query associated AsyncApexJobs (borrow portions from A. Fawcett [see below])
 		// TODO: Use force-di to inject a test JobInfoResolver
 		Map<Id, JobInfo> jobs = this.getJobInformationFromJobIds();
@@ -99,6 +102,7 @@ public class accc_BatchApexErrorEventHandler implements accc_IApexPlatformEventH
 			// process exception, handle w/ care
 			accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp, true);
 		}
+		*/
 
 	} // end of afterInsert
 
