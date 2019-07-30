@@ -75,6 +75,8 @@
 		<members>accc_ApexApplicationException</members>
 		<members>accc_ApexApplicationExceptionTest</members>
 		<members>accc_TestUtility</members>
+		<members>accc_ApexPlatformEventDispatcherTest</members>
+		<members>accc_ApexPlatformEventDispatcher</members>
 		<name>ApexClass</name>
     </types>
 	<types>
