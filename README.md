@@ -1,7 +1,7 @@
 Platform Event Wrapper - Work In Progress (WIP)
 ===============================================
 
-See Document [PDF](https://github.com/bjanderson70/sf-platform-events/blob/master/PE-Framework.pdf) as it is most up-to-date. The platform wrapper should work in your environment. However, there are updates to be made but time and work constraints are impacting deliverable.
+See Document [PDF](https://github.com/bjanderson70/sf-platform-events/blob/master/PE-Framework.pdf) as it is most up-to-date. The platform wrapper should work in your environment. However, there are updates to be made but time and work constraints are impacting deliverable. This project will deploy but some features (classes) will be overwritten by cross-cutting-concerns. **Do NOT** install this package over the sf-cross-cutting-concerns! As it will overwrite crucial aspects. I have not yet **MERGEed** the two.
 
 Note, this package changed the prefix to **accc_** to become and add-on package to the *Cross Cutting Concerns* package. In addition, will be adding Summer '19 features **AsyncOperationEvent**; however, this will **tie this package to minimum version 46**. Finally, updates include more data written into the BigObject (i.e. replayids and operation ids) for recovery on a queued high-volume event.
 
