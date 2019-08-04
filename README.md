@@ -30,7 +30,7 @@ What is the value?
 Without some framework, or extensible tools, platform events are piecemealed,
 forgotten, or a mish-mash of incongruous parts. It provides a consistent and
 manageable control of publishing and subscribing to platform events; both
-standard and high-volume events.
+high-volume events and Change Data Capture events.
 
 The value lies in being consistent, reliable, reusable and flexible.
 
