@@ -1,15 +1,19 @@
 Platform Event Wrapper - Work In Progress (WIP)
 ===============================================
 
-See Document [PDF](https://github.com/bjanderson70/sf-platform-events/blob/master/PE-Framework.pdf) as it is most up-to-date. The platform wrapper should work in your environment. However, there are updates to be made but time and work constraints are impacting deliverable. This project will deploy but some features (classes) will be overwritten by cross-cutting-concerns. **Do NOT** install this package over the sf-cross-cutting-concerns! As it will overwrite crucial aspects. I have not yet **MERGEed** the two.
+See Document [PDF](https://github.com/bjanderson70/sf-platform-events/blob/master/PE-Framework.pdf) as it is most up-to-date. The platform wrapper should work in your environment. However, there are updates to be made but time and work constraints are impacting deliverable. This project will deploy but some features (classes) will be overwritten by cross-cutting-concerns. **Do NOT** install this package over the sf-cross-cutting-concerns! As it will overwrite crucial aspects.
 
-**I have update the  sf-cross-cutting-concerns to include Platform Events and CDC. Future enhancements will be done in sf-cross-cutting-concerns.**
+**I have updated the sf-cross-cutting-concerns to include Platform Events and CDC. Future enhancements will be done in sf-cross-cutting-concerns.** as the overlay of the two are becoming more apparent. Also, provides better continuity between these aspects.
+
+**This framework will be deprecated** as the logic has now moved into sf-cross-cutting-concerns. You can still use and augment the base functionality; however, updates will be done in **sf-cross-cutting-concerns**.
 
 Note the following **changes are done** (and a separate branch in sf-cross-cutting-concern contains these changes):
  * This package changed the prefix to **accc_** to become and add-on package to the *Cross Cutting Concerns* package. 
  * In addition, will be adding Summer '19 features **AsyncOperationEvent**; however, this will **tie this package to minimum version 46**. 
- * Updates include more data written into the BigObject (i.e. replayids and operation ids) for recovery on a queued high-volume event. The template will be started but will probably not be done before the merge.
+ * Updates include more data written into the BigObject (i.e. replayids and operation ids) for recovery on a queued high-volume event. 
+ * The template will be started but will probably not be done before the merge.
  * Incorporate Trigger Handling for Platform Events and CDC
+ * Control Event Batching Size (initially via attributes before moving into CMDT)
  
  Additional work is needed to handle AsyncOperationEvent and provide more robustness in the consumer.
 
