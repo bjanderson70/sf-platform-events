@@ -1,5 +1,5 @@
-Platform Event Wrapper - Work In Progress (WIP)
-===============================================
+Platform Event Wrapper - Work In Progress (Migrated to Sf-Cross-Cutting-Concerns)
+=================================================================================
 
 See Document [PDF](https://github.com/bjanderson70/sf-platform-events/blob/master/PE-Framework.pdf) as it is most up-to-date. The platform wrapper should work in your environment. However, there are updates to be made but time and work constraints are impacting deliverable. This project will deploy but some features (classes) will be overwritten by cross-cutting-concerns. **Do NOT** install this package over the sf-cross-cutting-concerns! As it will overwrite crucial aspects.
 
